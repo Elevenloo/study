@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DSE 2027 · 今日复习定位器</title>
+<style>
+:root{
+ --bg:#0d1220;--card:#161f31;--card2:#1d2940;--line:#2b3a55;
+ --tx:#e9eef8;--sub:#93a4c0;--acc:#5eead4;--acc2:#7dd3fc;
+ --warn:#fbbf24;--danger:#fb7185;--ok:#86efac;--blue:#60a5fa;--purple:#c4b5fd;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang HK","Noto Sans CJK TC","Microsoft YaHei",sans-serif;padding:12px 12px 86px}
+h1{font-size:19px;margin:2px 0 2px;letter-spacing:.4px}
+h2{font-size:15px;margin:0 0 10px;color:var(--acc2)}
+h3{font-size:13.5px;margin:15px 0 7px;color:var(--sub);font-weight:600}
+.sub{color:var(--sub);font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.grow{flex:1;min-width:120px}
+.hero{background:linear-gradient(140deg,#1c2c48,#142036);border-color:#3a5878}
+.big{font-size:30px;font-weight:800;color:var(--acc);line-height:1.15}
+.bar{height:7px;background:#0b1120;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:6px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:5px 9px;font-size:11px;white-space:nowrap}
+.chip b{color:var(--warn)}
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(13,18,32,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;z-index:9;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:var(--sub);padding:9px 2px 11px;font-size:10.5px;cursor:pointer}
+nav button.on{color:var(--acc);font-weight:700}
+nav button span{display:block;font-size:17px;line-height:1.25}
+section{display:none}section.on{display:block}
+label{display:block;font-size:12px;color:var(--sub);margin:9px 0 4px}
+input,select,textarea{width:100%;background:#0d1526;color:var(--tx);border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:14px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{resize:vertical;min-height:64px;font-size:13px}
+.btn{background:var(--acc);color:#06251f;border:0;border-radius:9px;padding:10px 13px;font-weight:700;font:inherit;font-size:13.5px;cursor:pointer}
+.btn2{background:var(--card2);color:var(--tx);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font:inherit;font-size:13px;cursor:pointer}
+.mini{background:none;border:1px solid var(--line);color:var(--sub);border-radius:7px;padding:3px 8px;font-size:11px;cursor:pointer}
+.block{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:10px;padding:11px 12px;margin:9px 0}
+.block.b2{border-left-color:var(--acc2)}.block.b3{border-left-color:var(--purple)}
+.block .h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.block .h b{font-size:14px}
+.block .topic{font-size:14px;font-weight:600;color:var(--tx);margin:6px 0 3px}
+.block .pt{font-size:12px;color:var(--sub);margin:2px 0}
+.tag{display:inline-block;padding:1px 7px;border-radius:99px;font-size:10.5px;margin:2px 4px 2px 0}
+.t-eng{background:#1d3a45;color:#7dd3fc}.t-chem{background:#3a2a1a;color:#fcd34d}
+.t-phy{background:#22304a;color:#93c5fd}.t-math{background:#2d2340;color:#c4b5fd}
+.t-m2{background:#252f43;color:#a5b4fc}.t-chi{background:#3a2430;color:#fda4af}
+.t-cs{background:#1f3529;color:#86efac}
+.t-red{background:#4a2130;color:#fda4af}.t-yel{background:#453a1d;color:#fcd34d}.t-grn{background:#1d3a2a;color:#86efac}
+.t-blu{background:#1c3050;color:#93c5fd}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:13px;border-bottom:1px dashed var(--line)}
+.kv:last-child{border-bottom:0}.kv b{color:var(--acc)}
+.hint{background:#1e2b1c;border:1px solid #38532c;color:#d9f99d;border-radius:9px;padding:9px 11px;font-size:12px;margin:9px 0}
+.warnbox{background:#33241c;border:1px solid #6b4527;color:#fed7aa;border-radius:9px;padding:9px 11px;font-size:12px;margin:9px 0}
+.errbox{background:#3a1e28;border:1px solid #7c3047;color:#fecdd3;border-radius:9px;padding:9px 11px;font-size:12px;margin:9px 0}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;word-break:break-word}
+pre{background:#0b1220;border:1px solid var(--line);border-radius:9px;padding:10px;overflow:auto;max-height:330px;white-space:pre-wrap;font-size:11.5px;color:#cbd5e1}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:7px 5px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--sub);font-weight:600}
+.item{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin:7px 0;font-size:12.5px}
+.item .meta{color:var(--sub);font-size:11px;margin-top:3px}
+/* 日历 */
+.calhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal .wd{text-align:center;font-size:10.5px;color:var(--sub);padding:3px 0}
+.cell{min-height:52px;background:#111a2c;border:1px solid #22304a;border-radius:7px;padding:3px 3px 2px;position:relative;cursor:pointer;overflow:hidden}
+.cell.out{opacity:.28;cursor:default}
+.cell.today{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+.cell.sel{background:#1b3143;border-color:var(--acc2)}
+.cell .d{font-size:11.5px;font-weight:700;line-height:1.2}
+.cell .ab{position:absolute;top:2px;right:3px;font-size:9px;color:var(--purple);font-weight:700}
+.cell .mk{font-size:9.5px;line-height:1.25;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell .dots{display:flex;gap:2px;flex-wrap:wrap;margin-top:2px}
+.dot{width:5px;height:5px;border-radius:99px;display:inline-block}
+.legend{display:flex;gap:7px;flex-wrap:wrap;font-size:10.5px;color:var(--sub);margin-top:9px}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:3px;vertical-align:-1px}
+/* 题目 */
+.q{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:11px;margin:9px 0}
+.q .qh{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-bottom:6px}
+.q .qt{font-size:13.5px;line-height:1.55;white-space:pre-wrap}
+.opt{display:block;padding:7px 9px;margin:5px 0;background:#0f1829;border:1px solid var(--line);border-radius:8px;font-size:13px;cursor:pointer}
+.opt.sel{border-color:var(--acc);background:#16302f}
+.opt.right{border-color:var(--ok);background:#16301f}
+.opt.wrong{border-color:var(--danger);background:#311b25}
+.q input.ans{width:100%;margin-top:7px}
+.q .fb{font-size:12px;margin-top:7px;padding:7px 9px;border-radius:8px}
+.fb.ok{background:#16301f;color:#bbf7d0}.fb.no{background:#311b25;color:#fecdd3}
+.progress{font-size:12px;color:var(--sub);margin:6px 0}
+.foot{color:var(--sub);font-size:11px;text-align:center;margin-top:18px}
+.hr{height:1px;background:var(--line);margin:12px 0}
+.badge{font-size:10px;padding:1px 6px;border-radius:99px;background:#26354d;color:#bcd3f0}
+</style>
+</head>
+<body>
+
+<h1>🎯 DSE 2027 · 今日复习定位器</h1>
+<div class="sub">打开即显示今天要复习的科目与课题 · 资料存本机 · 依据校历图片与主档案 v1.1 建立</div>
+
+<section id="tab-today" class="on">
+  <div class="card hero">
+    <div class="row">
+      <div class="grow">
+        <div class="sub">今天</div>
+        <div class="big" id="heroDate">—</div>
+        <div class="sub" id="heroMeta">—</div>
+      </div>
+      <div style="text-align:right">
+        <div class="sub">距中文科</div>
+        <div style="font-size:24px;font-weight:800;color:var(--acc2)" id="heroDday">—</div>
+        <div class="sub" id="heroPhase">—</div>
+      </div>
+    </div>
+    <div class="bar"><i id="heroBar" style="width:0%"></i></div>
+    <div class="chips" id="heroChips"></div>
+  </div>
+
+  <div class="card">
+    <h2>📍 定位日期</h2>
+    <div class="row">
+      <input type="date" id="pickDate" class="grow">
+      <button class="btn2" onclick="goToday()">回到今天</button>
+      <button class="btn2" onclick="go('calendar')">📅 日历</button>
+    </div>
+  </div>
+
+  <div class="card" id="dayCard">
+    <h2>📚 今天要复习什么</h2>
+    <div class="sub" id="dayHead">—</div>
+    <div id="blocks"></div>
+    <div id="dayExtra"></div>
+  </div>
+
+  <div class="card">
+    <h2>🧾 50 题自检（功能三）</h2>
+    <div class="sub" id="mistakeBrief">—</div>
+    <div class="row" style="margin-top:9px">
+      <button class="btn" onclick="go('quiz')">生成指令 / 做题</button>
+      <button class="btn2" onclick="go('mistake')">🔖 错题本</button>
+    </div>
+  </div>
+</section>
+
+<section id="tab-quiz">
+  <div class="card">
+    <h2>① 生成「50 题指令」</h2>
+    <div class="hint">指令会<b>自动附带错题检查结果</b>：把当天课题相关、尚未回炉的错题列进去，要求 AI 必须出变式题。复制给元宝 → 把回覆的 JSON 贴到下方 ② → 直接在 ③ 做题。</div>
+    <div class="row">
+      <button class="btn" onclick="buildPrompt()">🔧 生成指令</button>
+      <button class="btn2" onclick="copyEl('promptOut')">📋 复制指令</button>
+      <button class="btn2" onclick="runMistakeCheck()">🔍 错题检查</button>
+    </div>
+    <div id="checkReport"></div>
+    <pre id="promptOut" class="mono" style="margin-top:9px">按「生成指令」后这里会出现可复制的 prompt。</pre>
+  </div>
+
+  <div class="card">
+    <h2>② 粘贴 AI 回覆（JSON）</h2>
+    <div class="sub">接受纯 JSON 数组，也接受包在 ```json … ``` 里的回覆。会自动校验 50 题、字段完整性、以及<b>是否包含错题变式</b>。</div>
+    <textarea id="qInput" class="mono" style="min-height:110px" placeholder='[{"id":"Q1","subject":"英国语文","topic":"…","type":"mcq","q":"…","options":["A…","B…","C…","D…"],"answer":"B","explanation":"…","source":"new"}]'></textarea>
+    <div class="row" style="margin-top:8px">
+      <button class="btn" onclick="loadQuestions()">📥 载入并校验</button>
+      <button class="btn2" onclick="loadDemo()">🧪 载入 3 题示范</button>
+      <button class="btn2" onclick="clearQuestions()">清空题目</button>
+    </div>
+    <div id="qValidate"></div>
+  </div>
+
+  <div class="card">
+    <h2>③ 做题与判分</h2>
+    <div class="progress" id="qProgress">未载入题目</div>
+    <div id="qList"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" onclick="submitAnswers()">✅ 提交并判分</button>
+      <button class="btn2" onclick="resetAnswers()">重做</button>
+    </div>
+    <div id="qResult"></div>
+  </div>
+</section>
+
+<section id="tab-test">
+  <div class="card">
+    <h2>🗓️ 本周周测（每科每周一次 · 周末测）</h2>
+    <div class="sub" id="weekTestHead">—</div>
+    <div class="row" style="margin:8px 0">
+      <button class="btn2" onclick="shiftWeek(-1)">← 上周</button>
+      <button class="btn2" onclick="shiftWeek(0)">本周</button>
+      <button class="btn2" onclick="shiftWeek(1)">下周 →</button>
+    </div>
+    <div id="weekTestList"></div>
+    <div class="hint">范围 = <b>本周该科课题 + 上周错题</b>；中文／公社为轻量保温测，不占黄金段。周日 16:30–18:30 固定占用不动。</div>
+  </div>
+  <div class="card">
+    <h2>📈 周测成绩记录</h2>
+    <div id="testHistory"></div>
+  </div>
+</section>
+
+<section id="tab-calendar">
+  <div class="card">
+    <div class="calhead">
+      <button class="btn2" onclick="shiftMonth(-1)">←</button>
+      <b id="calTitle">—</b>
+      <button class="btn2" onclick="shiftMonth(1)">→</button>
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <input type="date" id="calPick" class="grow" onchange="pickCalDate()">
+      <button class="btn2" onclick="calToday()">今天</button>
+    </div>
+    <div class="cal" id="calGrid"></div>
+    <div class="legend" id="calLegend"></div>
+  </div>
+  <div class="card" id="calDetailCard">
+    <h2>📌 点选日期详情</h2>
+    <div id="calDetail"></div>
+  </div>
+</section>
+
+<section id="tab-mistake">
+  <div class="card">
+    <h2>🔖 错题本（三分类 + 回炉状态）</h2>
+    <div class="warnbox">「概念缺口」才重做整题；「审题失误」「运算／单位」只写一句规则。<b>rework_pending</b> = 尚未出现在下一次 50 题指令里，生成指令时会自动带出。</div>
+    <label>手动新增</label>
+    <div class="row">
+      <select id="mSubj" class="grow"></select>
+      <select id="mType" class="grow"><option>概念缺口</option><option>审题失误</option><option>运算/单位</option></select>
+    </div>
+    <input id="mText" placeholder="题目位置 + 一句规则，例：Chem P1 Q14 摩尔比搞错 → 先写式子再代数">
+    <div class="row" style="margin-top:8px">
+      <button class="btn" onclick="addMistake()">＋ 加入</button>
+      <button class="btn2" onclick="renderMistakes()">刷新</button>
+      <button class="btn2" onclick="clearDoneMistakes()">清除已回炉</button>
+    </div>
+    <div class="hr"></div>
+    <div id="mistakeList"></div>
+  </div>
+</section>
+
+<section id="tab-data">
+  <div class="card">
+    <h2>⚙️ 资料与设置</h2>
+    <div class="warnbox">⚠️ <b>推断项</b>：图 3 的「Group A / Group B」按图 4「WEEK A &amp; B」解读为 <b>A 周上 A 栏蓝标、B 周上 B 栏蓝标</b>（因 WED／FRI 两栏同日都有蓝标，一天不可能同时上两科）。若与你实际不符，到下方「A/B 周」改，或把补充的补课表贴进来。</div>
+    <h3>数据概览</h3>
+    <div id="dataOverview"></div>
+    <h3>导入 / 导出（换设备、丢给别的 AI）</h3>
+    <div class="row">
+      <button class="btn" onclick="exportData()">⬇️ 导出全部资料</button>
+      <button class="btn2" onclick="document.getElementById('importFile').click()">⬆️ 导入资料</button>
+      <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importData(event)">
+    </div>
+    <label>或直接粘贴资料 JSON 后合并</label>
+    <textarea id="pasteData" class="mono" style="min-height:70px" placeholder='可贴：课程表 / 补课表 / A-B 周覆盖 / 别处导出的资料'></textarea>
+    <div class="row" style="margin-top:8px"><button class="btn2" onclick="mergePasted()">🔗 合并</button></div>
+  </div>
+
+  <div class="card">
+    <h2>🔵 校内增值补课（蓝色荧光笔 7 项）</h2>
+    <div class="sub">2026-09-07 → 2027-01-27｜16:05–17:00；带 @ 者 16:05–18:00</div>
+    <div id="suppTable"></div>
+  </div>
+
+  <div class="card">
+    <h2>🅰️🅱️ A / B 周（点击切换）</h2>
+    <div class="sub" id="abHint">—</div>
+    <div id="abList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🏫 在校课表摘要（6A · 待你补充覆盖）</h2>
+    <div class="sub">图 1 读取；只列与你七科相关的重点时段，用于「当天上过什么 → 晚间做同科输出」。</div>
+    <div id="schoolTable"></div>
+  </div>
+
+  <div class="card">
+    <h2>📖 使用说明</h2>
+    <div class="sub" style="line-height:1.8">
+      1. 打开即见「今天」三段科目 + 具体课题；上方日期选择器可定位任意日。<br>
+      2. 「50 题」页生成指令 → 复制给元宝 → 回覆 JSON 贴回 → 在本页做题、判分、错题自动入库。<br>
+      3. 「周测」页每科每周一次，固定在周末；范围自动跟当周课题联动。<br>
+      4. 「日历」显示考试、Gate、周测、补课、停课、OLE、周复盘；点日期直跳详情。<br>
+      5. 所有资料存浏览器 localStorage，不上传；换设备先导出。<br>
+      6. 你稍后补的「课程表 / 补课时间」可在「导入」覆盖，不必重做工具。
+    </div>
+  </div>
+</section>
+
+<nav>
+  <button class="on" data-t="today" onclick="go('today')"><span>🎯</span>今日</button>
+  <button data-t="quiz" onclick="go('quiz')"><span>✏️</span>50题</button>
+  <button data-t="test" onclick="go('test')"><span>📝</span>周测</button>
+  <button data-t="calendar" onclick="go('calendar')"><span>📅</span>日历</button>
+  <button data-t="mistake" onclick="go('mistake')"><span>🔖</span>错题</button>
+  <button data-t="data" onclick="go('data')"><span>⚙️</span>资料</button>
+</nav>
+
+<script>
+/* ============================================================
+   DSE 2027 今日复习定位器
+   资料来源：
+   - 主档案 DSE2027_考生档案与提升计划.md v1.1（§5 课程清单 / §6.5 逐周表）
+   - 图1 6A 2026-2027 TIMETABLE
+   - 图2 X1/X2 选修分组
+   - 图3 Value Added Scheme for S6（蓝色荧光笔 = 用户要上的科目）
+   - 图4 S5&S6 Value-added Scheme 周历 WEEK A & B
+   ============================================================ */
+
+/* ---------- 基础工具 ---------- */
+const KEY="dse2027_daily_v1";
+function pad(n){return String(n).padStart(2,"0")}
+function fmt(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function parseD(s){const p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2])}
+function today(){return fmt(new Date())}
+function addDays(s,n){const d=parseD(s);d.setDate(d.getDate()+n);return fmt(d)}
+function diffDays(a,b){return Math.round((parseD(b)-parseD(a))/86400000)}
+function mondayOf(s){const d=parseD(s),w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return fmt(d)}
+function wdName(s){return ["日","一","二","三","四","五","六"][parseD(s).getDay()]}
+function wdIdx(s){return (parseD(s).getDay()+6)%7} // 0=Mon … 6=Sun
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function copyEl(id){copyText(document.getElementById(id).textContent)}
+function copyText(t){
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>alert("✅ 已复制")).catch(()=>fb(t));
+ else fb(t);
+ function fb(x){const a=document.createElement("textarea");a.value=x;document.body.appendChild(a);a.select();
+  try{document.execCommand("copy");alert("✅ 已复制")}catch(e){prompt("请手动复制：",x)}document.body.removeChild(a)}
+}
+function dl(name,text){const b=new Blob([text],{type:"application/json;charset=utf-8"});const a=document.createElement("a");
+ a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+
+/* ---------- 科目与课题库 ---------- */
+const SUBJECTS=["英国语文","化学","物理","数学必修","M2","中国语文","公民与社会发展"];
+const SCOLOR={"英国语文":"t-eng","化学":"t-chem","物理":"t-phy","数学必修":"t-math","M2":"t-m2","中国语文":"t-chi","公民与社会发展":"t-cs"};
+const SDOT={"英国语文":"#7dd3fc","化学":"#fcd34d","物理":"#93c5fd","数学必修":"#c4b5fd","M2":"#a5b4fc","中国语文":"#fda4af","公民与社会发展":"#86efac"};
+const SYL={
+"英国语文":{
+ e1:["P3 全卷结构与题型",["Part A 短答 / Part B 综合写作","各题型字数与配分","时间分配"]],
+ e2:["逐字稿听写与连读弱读",["听 3 遍→写逐字稿→对原文","连读 / 弱读 / 失爆","数字与专有名词辨听"]],
+ e3:["数字与专有名词速记",["日期 / 金额 / 百分比 / 电话","人名地名拼写","笔记缩写与箭头符号"]],
+ e4:["Data File 交叉核对",["录音信息 × 资料对照","录音否定资料处必为考点","3 点提纲先列后写"]],
+ e5:["综合写作文体与格式分",["email / report / article / letter / speech","称呼 / 标题 / 署名 / 语域","格式分先拿稳"]],
+ e6:["P1 学术词与长难句",["高频学术词表","长难句拆解","限时扫读"]],
+ e7:["P2 文体模板与连接词",["议论文 / 书信 / 建议书","连接词库","开头收束模板"]],
+ e8:["口试 1 分钟结构",["立场→理由→例子→收束","小组讨论回应与接力","个人短答"]],
+ e9:["P3 全卷计时（周六 09:15）",["完整 3 小时模拟","漏题立刻放不连环崩","成文前 90 秒扫题"]],
+ e10:["P3 Part A 短答专项",["预测词性 / 数字 / 人名","只记谁·做什么·数字·转折","不追逐单字"]]
+},
+"化学":{
+ c1:["计量关系与摩尔",["n=m/M=C·V=V/Vm=N/NA","先写式子→代数字→单位与有效数字","限量试剂"]],
+ c2:["配平与离子方程式",["氧化还原配平","离子方程式","状态符号与条件"]],
+ c3:["氧化还原",["氧化数","氧化剂 / 还原剂","电化学序"]],
+ c4:["酸碱与滴定计算",["pH 与指示剂","滴定曲线","摩尔比与终点"]],
+ c5:["反应速率",["速率方程","碰撞理论","浓度 / 温度 / 催化剂"]],
+ c6:["化学平衡",["Le Chatelier","Kc","速率 vs 平衡取舍"]],
+ c7:["焓变与实验设计",["燃烧焓实验设计","量热计与误差","流程与逻辑"]],
+ c8:["电化学",["原电池 / 电解","电极反应","法拉第定律"]],
+ c9:["碳化合物与化石燃料",["官能团","同分异构","石油分馏"]],
+ c10:["装置图与危险警示标签",["实验装置手绘","易燃 / 腐蚀标签","细节不规范即扣分"]],
+ c11:["工业化学：速率方程与活化能",["速率方程求级数","Arrhenius 方程与对数换算","量纲分析"]],
+ c12:["工业流程：Haber / Contact / 氯碱 / Solvay",["反应式与催化剂","折衷条件 T、P 及原因","产率·成本·安全·环保"]],
+ c13:["绿色化学与跨课题",["速率 × 平衡 × 成本","原子经济","可持续发展"]],
+ c14:["卷一 MC 提速",["≤1 分钟/题","先跳后回","相近概念辨析"]],
+ c15:["实验解释题踩分",["「因为…所以…导致…」链","1 分题术语精准","不多写不少写"]],
+ c16:["卷二第二选修（待确认）",["⚠️ 须向老师确认第二选修","物料化学 / 分析化学","每选修约 25 分钟"]]
+},
+"物理":{
+ p1:["必修 I 热学与气体",["温度与内能","热传递三种方式","气体定律"]],
+ p2:["必修 II 力与运动",["运动学 / 牛顿定律","动量 / 功·能·功率","圆周与万有引力"]],
+ p3:["必修 III 波与光",["干涉 / 衍射 / 光栅","声音与共振","透镜 / 电磁波谱"]],
+ p4:["必修 IV 电和磁",["库仑定律 / 电路","家居电学","电磁感应 / 变压器"]],
+ p5:["必修 V 放射与核能",["α/β/γ 与核方程","半衰期","裂变聚变与防护"]],
+ p6:["E2 卢瑟福散射与玻尔模型",["散射实验结论","量子化能级","氢线状光谱"]],
+ p7:["E2 光电效应",["爱因斯坦方程","截止频率 vs 截止波长","eV ↔ J 换算"]],
+ p8:["E2 波粒二象性",["德布罗意波长","电子衍射","动量关系"]],
+ p9:["E2 STM / 瑞利准则",["隧道效应","分辨本领","瑞利判据"]],
+ p10:["E3 发电与效率",["化石燃料 / 核能发电","效率计算","E=mc²"]],
+ p11:["E3 可再生能源",["太阳能 / 风能 / 水力 / 潮汐","原理与优劣","环境影响"]],
+ p12:["E3 建筑能源效率",["U 值","OTTV 总热传送值","隔热与 COP"]],
+ p13:["E3 定量计算",["太阳常数与太阳能板","风机最大功率","单位与面积换算"]],
+ p14:["跨单元综合题",["E3 × 必修 IV 电功率","E3 × 必修 I 热传递","完整步骤拿方法分"]],
+ p15:["方法分与单位检查",["每步写公式与单位","最终答案错仍给方法分","有效数字"]]
+},
+"数学必修":{
+ m1:["数与代数 1–4 单位",["二次方程","复数基础","函数与图像"]],
+ m2:["数与代数 5–9 单位",["指数与对数","多项式","数列 / 不等式 / 线性规划"]],
+ m3:["图形与空间：续三角学",["单位圆重建概念","正弦余弦定理","立体三角"]],
+ m4:["圆与轨迹",["圆的基本性质","圆的方程","轨迹"]],
+ m5:["数据处理",["排列组合 / 概率","离差","统计误用"]],
+ m6:["进阶应用与综合题",["跨单位综合","建模","探究题"]],
+ m7:["卷二 MC 计时",["≤1 分钟/题","先跳后回","估算法"]],
+ m8:["2026/27 评核大纲改动",["删极坐标","增三垂线定理","用新版真题"]],
+ m9:["整卷计时",["卷一 2h15","卷二 1h15","步骤分"]]
+},
+"M2":{
+ x1:["数学归纳法",["定义 P(n) → 基步","归纳假设 → k 推 k+1","完整结论，跳步即失分"]],
+ x2:["二项式定理",["展开式","通项","系数"]],
+ x3:["续三角 / 数 e / 奇偶函数",["弧度与三角恒等式","e 与极限","奇偶函数定积分性质"]],
+ x4:["极限",["极限定义","连续性","代入与化简"]],
+ x5:["求导法",["定义与法则","链式法则","隐函数"]],
+ x6:["求导应用",["切线 / 极值","最值建模","速度加速度"]],
+ x7:["不定积分及应用",["基本积分","换元","分部积分"]],
+ x8:["定积分",["基本定理","奇偶函数性质","分段积分"]],
+ x9:["面积与旋转体体积",["平面面积","旋转体体积","⚠️ 常被笔记漏掉"]],
+ x10:["行列式与矩阵",["2×2 / 3×3 行列式","矩阵运算","运算次序"]],
+ x11:["线性方程组与向量",["方程组解的结构","基底选取","点与线关系"]],
+ x12:["数量积 / 向量积与应用",["点积叉积","空间关系推理","应用题"]],
+ x13:["乙部论证链",["3–5 长题共 50 分","前小题是后段前提","标注连锁风险"]],
+ x14:["整卷计时",["2h30 / 100 分","甲部 50 乙部 50","不碰超范围内容"]]
+},
+"中国语文":{
+ h1:["文言虚词与句式",["18 虚词","判断 / 被动 / 倒装","句译踩分"]],
+ h2:["卷一常见题型",["词解 / 句译","内容概括","鉴赏与评价"]],
+ h3:["卷二文体与结构模板",["记叙 / 议论 / 抒情","开头收束","审题立意"]],
+ h4:["计时作文",["每周 1 篇","结构先行","不掉出 3 级"]],
+ h5:["计时分配",["卷一 1h30","卷二 2h15","先易后难"]]
+},
+"公民与社会发展":{
+ s1:["主题一 一国两制下的香港",["宪法与基本法","法治与权利义务","特区政治体制"]],
+ s2:["主题二 改革开放以来的国家",["1978 以来发展","重大发展战略","大湾区与香港融入"]],
+ s3:["主题三 互联相依的当代世界",["全球化","科技与资讯素养","可持续发展"]],
+ s4:["资料回应题答题链",["读资料提关键信息","用概念对准主题","有层次·有证据·简略论证"]],
+ s5:["跨主题关联",["大湾区 × 宪制地位","国家支持 × 世界议题","2h 一卷必答"]]
+}
+};
+function topicOf(sub,id){const t=SYL[sub]&&SYL[sub][id];return t?{id:id,name:t[0],points:t[1]}:{id:id||"—",name:"（本週未指定課題）",points:[]}}
+
+/* ---------- 逐周计划 W1–W21（依主档案 §6.5） ---------- */
+const WEEKS=[
+ {w:1, s:"2026-11-15",e:"2026-11-21",p:"P0",t:{"英国语文":["e1"],"化学":["c1"],"物理":["p1"],"数学必修":["m1"],"M2":["x1"],"中国语文":["h1"],"公民与社会发展":["s1"]},ms:"诊断周：基线测 + 确认化学第二选修"},
+ {w:2, s:"2026-11-22",e:"2026-11-28",p:"P0",t:{"英国语文":["e1","e10"],"化学":["c1","c2"],"物理":["p1"],"数学必修":["m1"],"M2":["x1"],"中国语文":["h1"],"公民与社会发展":["s1"]},ms:"七科各产出 1 页知识地图；P0 Gate"},
+ {w:3, s:"2026-11-29",e:"2026-12-05",p:"P1",t:{"英国语文":["e10","e2"],"化学":["c1"],"物理":["p1","p2"],"数学必修":["m1"],"M2":["x1","x2"],"中国语文":["h4"],"公民与社会发展":["s1"]},ms:"中文 1 篇计时作文"},
+ {w:4, s:"2026-12-06",e:"2026-12-12",p:"P1",t:{"英国语文":["e3"],"化学":["c3"],"物理":["p2"],"数学必修":["m2"],"M2":["x1"],"中国语文":["h2"],"公民与社会发展":["s4"]},ms:"公社 1 份资料回应题"},
+ {w:5, s:"2026-12-13",e:"2026-12-19",p:"P1",t:{"英国语文":["e4"],"化学":["c4"],"物理":["p2","p3"],"数学必修":["m2"],"M2":["x4","x5"],"中国语文":["h3"],"公民与社会发展":["s2"]},ms:"周六第 1 次 P3 分节计时"},
+ {w:6, s:"2026-12-20",e:"2026-12-26",p:"P1",t:{"英国语文":["e9"],"化学":["c5","c6","c7"],"物理":["p1","p2"],"数学必修":["m3"],"M2":["x6"],"中国语文":["h4"],"公民与社会发展":["s2"]},ms:"🎄 圣诞假：必修 12 课题首轮扫读"},
+ {w:7, s:"2026-12-27",e:"2027-01-02",p:"P1",t:{"英国语文":["e2","e9"],"化学":["c5","c6"],"物理":["p2","p3"],"数学必修":["m3"],"M2":["x6","x7"],"中国语文":["h3"],"公民与社会发展":["s3"]},ms:"P1 Gate 验收"},
+ {w:8, s:"2027-01-03",e:"2027-01-09",p:"P2",t:{"英国语文":["e7"],"化学":["c7","c10"],"物理":["p3"],"数学必修":["m3","m4"],"M2":["x7"],"中国语文":["h2"],"公民与社会发展":["s4"]},ms:"化学卷一甲部 MC 计时"},
+ {w:9, s:"2027-01-10",e:"2027-01-16",p:"P2",t:{"英国语文":["e9"],"化学":["c11"],"物理":["p4"],"数学必修":["m4"],"M2":["x8"],"中国语文":["h3"],"公民与社会发展":["s3"]},ms:"P3 全卷计时第 1 套 + 逐题归因"},
+ {w:10,s:"2027-01-17",e:"2027-01-23",p:"P2",t:{"英国语文":["e9"],"化学":["c12"],"物理":["p4"],"数学必修":["m4","m5"],"M2":["x9"],"中国语文":["h4"],"公民与社会发展":["s4"]},ms:"第 1 套 M2 整卷计时"},
+ {w:11,s:"2027-01-24",e:"2027-01-30",p:"P2",t:{"英国语文":["e8"],"化学":["c15","c10"],"物理":["p5"],"数学必修":["m5"],"M2":["x10"],"中国语文":["h2"],"公民与社会发展":["s3"]},ms:"化学卷二选修第 1 次计时"},
+ {w:12,s:"2027-01-31",e:"2027-02-06",p:"P2",t:{"英国语文":["e8"],"化学":["c13"],"物理":["p6","p7"],"数学必修":["m5","m6"],"M2":["x11"],"中国语文":["h3"],"公民与社会发展":["s4"]},ms:"第 1 套物理整卷计时"},
+ {w:13,s:"2027-02-07",e:"2027-02-13",p:"P2",t:{"英国语文":["e8"],"化学":["c14"],"物理":["p10","p11","p12","p13"],"数学必修":["m6"],"M2":["x12"],"中国语文":["h4"],"公民与社会发展":["s5"]},ms:"🧧 农历年假：P2 Gate 验收"},
+ {w:14,s:"2027-02-14",e:"2027-02-20",p:"P3",t:{"英国语文":["e9"],"化学":["c14"],"物理":["p14"],"数学必修":["m9"],"M2":["x13"],"中国语文":["h2"],"公民与社会发展":["s4"]},ms:"P3 全卷第 3 套（周六 09:15）"},
+ {w:15,s:"2027-02-21",e:"2027-02-27",p:"P3",t:{"英国语文":["e8"],"化学":["c14","c15"],"物理":["p14"],"数学必修":["m7"],"M2":["x14"],"中国语文":["h3"],"公民与社会发展":["s5"]},ms:"错题本清一次（只留红标）"},
+ {w:16,s:"2027-02-28",e:"2027-03-06",p:"P3",t:{"英国语文":["e8"],"化学":["c15"],"物理":["p15"],"数学必修":["m9"],"M2":["x13"],"中国语文":["h4"],"公民与社会发展":["s5"]},ms:"🔴 口试前最后整备：全真模拟 ×3"},
+ {w:17,s:"2027-03-07",e:"2027-03-13",p:"P3",t:{"英国语文":["e8"],"化学":["c15"],"物理":["p15"],"数学必修":["m7"],"M2":["x13"],"中国语文":["h2"],"公民与社会发展":["s4"]},ms:"🔴 3/9 英文口试开考"},
+ {w:18,s:"2027-03-14",e:"2027-03-20",p:"P3",t:{"英国语文":["e9"],"化学":["c14"],"物理":["p14"],"数学必修":["m9"],"M2":["x14"],"中国语文":["h3"],"公民与社会发展":["s5"]},ms:"3/18 口试结束；P3 Gate 验收"},
+ {w:19,s:"2027-03-21",e:"2027-03-27",p:"P4",t:{"英国语文":["e9"],"化学":["c14","c16"],"物理":["p14"],"数学必修":["m9"],"M2":["x13"],"中国语文":["h4"],"公民与社会发展":["s4"]},ms:"按考试顺序模拟；第一轮复习收工 ✅"},
+ {w:20,s:"2027-03-28",e:"2027-04-03",p:"P4",t:{"英国语文":["e6","e7"],"化学":["c14"],"物理":["p6","p7","p8","p12"],"数学必修":["m8"],"M2":["x13"],"中国语文":["h2"],"公民与社会发展":["s5"]},ms:"公式卡定稿；4/6 切换考试作息"},
+ {w:21,s:"2027-04-04",e:"2027-04-07",p:"P4",t:{"英国语文":["e1","e9"],"化学":["c16"],"物理":["p15"],"数学必修":["m8"],"M2":["x13"],"中国语文":["h3"],"公民与社会发展":["s4"]},ms:"不碰新题、不熬夜"}
+];
+const PHASES=[
+ {id:"P0",name:"诊断与止血",s:"2026-11-15",e:"2026-11-28"},
+ {id:"P1",name:"基础重建",s:"2026-11-29",e:"2027-01-02"},
+ {id:"P2",name:"专题攻坚",s:"2027-01-03",e:"2027-02-13"},
+ {id:"P3",name:"整卷＋口试",s:"2027-02-14",e:"2027-03-20"},
+ {id:"P4",name:"冲刺保分",s:"2027-03-21",e:"2027-04-07"},
+ {id:"P5",name:"考试期",s:"2027-04-08",e:"2027-04-23"},
+ {id:"P6",name:"考后等待／放榜",s:"2027-04-24",e:"2027-07-14"}
+];
+function weekOf(ds){return WEEKS.find(w=>ds>=w.s&&ds<=w.e)||null}
+function phaseOf(ds){return PHASES.find(p=>ds>=p.s&&ds<=p.e)||(ds<PHASES[0].s?PHASES[0]:PHASES[6])}
+
+/* ---------- 官方考试日 / Gate / 周复盘 ---------- */
+const EXAMS=[
+ {d:"2027-04-08",n:"中国语文 卷一＋卷二",icon:"🔴"},
+ {d:"2027-04-09",n:"英国语文 卷一＋卷二",icon:"🔴"},
+ {d:"2027-04-10",n:"英国语文 卷三 P3（周六）",icon:"🔴"},
+ {d:"2027-04-12",n:"数学必修 卷一＋卷二",icon:"🔴"},
+ {d:"2027-04-13",n:"公民与社会发展",icon:"🔴"},
+ {d:"2027-04-15",n:"化学 卷一＋卷二",icon:"🔴"},
+ {d:"2027-04-21",n:"物理 卷一＋卷二",icon:"🔴"},
+ {d:"2027-04-23",n:"M2 数学延伸单元二",icon:"🔴"},
+ {d:"2027-07-14",n:"放榜 / JUPAS 改选",icon:"🎓"}
+];
+const ORAL={s:"2027-03-09",e:"2027-03-18",n:"英国语文 口试（暂定）"};
+const GATES=[
+ {d:"2026-11-28",n:"P0 Gate 诊断完成"},{d:"2027-01-02",n:"P1 Gate 基础重建"},
+ {d:"2027-02-13",n:"P2 Gate 专题攻坚"},{d:"2027-03-20",n:"P3 Gate 整卷＋口试"},
+ {d:"2027-04-07",n:"P4 Gate 第一轮收工"}
+];
+
+/* ---------- 图4：A/B 周历（周一 → A/B） ---------- */
+/* 读自校历图片；S6 补课期 2026-09-07 → 2027-01-27。未列出的周按交替推算，可在资料页改。 */
+const AB_DEFAULT={
+ "2026-09-07":"A","2026-09-14":"B","2026-09-21":"A","2026-09-28":"B",
+ "2026-10-05":"A","2026-10-12":"B","2026-10-19":"A","2026-10-26":"B",
+ "2026-11-02":"A","2026-11-09":"B",
+ "2026-11-16":"B","2026-11-23":"A","2026-11-30":"B",
+ "2026-12-07":"A","2026-12-14":"B","2026-12-21":"A","2026-12-28":"B",
+ "2027-01-04":"A","2027-01-11":"B","2027-01-18":"A","2027-01-25":"B",
+ "2027-02-01":"A","2027-02-08":"B","2027-02-15":"A","2027-02-22":"B",
+ "2027-03-01":"A","2027-03-08":"B","2027-03-15":"A","2027-03-22":"B",
+ "2027-03-29":"A","2027-04-05":"B","2027-04-12":"A","2027-04-19":"B",
+ "2027-04-26":"A","2027-05-03":"B","2027-05-10":"A","2027-05-17":"B","2027-05-24":"A"
+};
+/* 图4 斜线 = 当日无补课；* = OLE；△ = 补课（补星期五课）；灰底 = 假期 */
+const NO_LESSON=new Set([
+ "2026-09-10","2026-09-17","2026-09-18","2026-10-01","2026-10-14","2026-10-15","2026-11-16","2026-11-17",
+ "2026-12-02","2026-12-03","2026-12-11","2026-12-17","2026-12-18","2027-01-05","2027-01-07","2027-01-15","2027-01-22"
+]);
+const OLE=new Set(["2026-09-18","2026-10-16","2026-10-23","2026-11-20","2026-11-27","2027-01-29","2027-04-02","2027-05-07","2027-05-28"]);
+/* 只保留 S6 补课期内（≤1/27）的调课；3/2 与 15/4 属 S4/S5，与本考生无关 */
+const MAKEUP={"2026-10-02":"星期四","2026-12-01":"星期五"};
+const SUPP_END="2027-01-27";
+
+/* 图3 蓝色荧光笔：A 周 / B 周 × 星期（1=Mon…5=Fri）→ 补课 */
+const SUPP={
+ A:{1:{sub:"英国语文",code:"AD2 ENG",teacher:"58",room:"606"},
+    2:{sub:"化学",code:"X2 CHEM",teacher:"27",room:"612"},
+    3:{sub:"中国语文",code:"ACD1 CHI",teacher:"48",room:"605"},
+    5:{sub:"数学必修",code:"AD-C1 MATH",teacher:"33",room:"605"}},
+ B:{2:{sub:"物理",code:"X1 PHY",teacher:"19",room:"614"},
+    3:{sub:"公民与社会发展",code:"AD2 CS",teacher:"04",room:"605"},
+    5:{sub:"M2",code:"X3 M2@",teacher:"08",room:"606",long:true}}
+};
+/* 图1 在校课表摘要（与你七科相关） */
+const SCHOOL={
+ 0:["ENG 09:35–10:35","X2 化学 10:50–12:50","中文 14:00–15:00","MACO 数学 15:00–16:00"],
+ 1:["公社 CS 09:05–10:35","X1 物理 10:50–12:50","M2 14:00–14:30 / 15:30–16:00"],
+ 2:["ENG 09:05–10:35","X2 化学 10:50–11:50","M2 11:50–12:50","PE 14:00–15:00","中文 15:00–16:00"],
+ 3:["中文 09:05–10:35","MACO 数学 10:50–11:50","X1 物理 11:50–12:50","ENG 14:00–15:00","中文 15:00–16:00"],
+ 4:["MACO 数学 09:05–10:35","X2 化学 10:50–11:50","X1 物理 11:50–12:50","ENG 14:00–15:00","M2 15:00–16:00"],
+ 5:["（周末）"],6:["（周末）"]
+};
+
+/* ---------- 周测排程（每科每周一次 · 周末测） ---------- */
+const WEEKTEST=[
+ {wd:5,time:"09:15–10:45",sub:"英国语文",scope:"P3 分节／全卷计时（对齐考试钟）",n:"1 套分节 或 全卷",dur:90},
+ {wd:5,time:"11:00–12:15",sub:"化学",scope:"卷一 MC 20 题 + 本周课题结构题",n:"20–25 题",dur:75},
+ {wd:5,time:"14:00–15:15",sub:"物理",scope:"本周必修／E2／E3 课题 + 方法分",n:"8–12 题",dur:75},
+ {wd:5,time:"15:45–16:45",sub:"M2",scope:"甲部短题 + 乙部 1 长题（写全链）",n:"6–8 题",dur:60},
+ {wd:6,time:"09:30–10:45",sub:"数学必修",scope:"卷二 MC 20 题 + 长题 1",n:"21 题",dur:75},
+ {wd:6,time:"11:00–11:50",sub:"中国语文",scope:"卷一分节 或 作文提纲（保温）",n:"1 份",dur:50},
+ {wd:6,time:"14:00–14:40",sub:"公民与社会发展",scope:"资料回应题 1 题（保温）",n:"1 题",dur:40}
+];
+
+/* ---------- 三段轮换（依主档案 §6.3） ---------- */
+function blocksOf(ds){
+ const wk=weekOf(ds),i=wdIdx(ds);
+ if(!wk)return [{slot:"—",sub:"—",topics:[],note:"此日期在 W1–W21 计划外（考试期／考后），按主档案 §6.6 只做维持。"}];
+ const pick=(sub,off)=>{const arr=(wk.t[sub]||[]);if(!arr.length)return null;return topicOf(sub,arr[(i+(off||0))%arr.length])};
+ const A={slot:"段 A · 19:15–20:15",sub:"",topics:[],note:"弱项主攻，永远给当天最不想做的那科"};
+ const B={slot:"段 B · 20:25–21:25",sub:"",topics:[],note:"理科输出，必须写完整步骤（物理方法分／M2 论证链／化学单位）"};
+ const C={slot:"段 C · 21:35–22:35",sub:"",topics:[],note:"轮换 + 错题回炉"};
+ if(i===0){A.sub="英国语文";A.topics=[pick("英国语文")];B.sub="数学必修";B.topics=[pick("数学必修")];C.sub="加课复盘 + 错题";C.note="把 16:05 补课那科做一次输出（看≠会）";}
+ else if(i===1){A.sub="化学";A.topics=[pick("化学")];B.sub="M2";B.topics=[pick("M2")];C.sub=(wk.w%2?"中国语文":"公民与社会发展");C.topics=[pick(C.sub)];C.note="隔周轮换；中文稳 3、公社保 A，不占黄金段";}
+ else if(i===2){A.sub="英国语文";A.topics=[pick("英国语文",0)];B.sub="物理";B.topics=[pick("物理")];C.sub="错题本";C.topics=[];C.note="三分类回炉；只重做概念缺口";}
+ else if(i===3){A.sub="固定占用日";A.topics=[{id:"—",name:"周四 06:30–12:00 校外补习（制式待确认）",points:["课前 15′ 预习该科 3 个问题","课后 20′ 写 3 考点 + 1 未明"]}];A.note="该时段不排复习；若为晚间时段则当日三段整段取消，只留 10′ 日结与睡眠";B.sub="—";B.note="不补进度、不熬夜";C.sub="10′ 日结";C.note="写 3 行日结 + 勾选";}
+ else if(i===4){A.sub="化学";A.topics=[pick("化学",0)];B.sub=(wk.w%2?"M2":"数学必修");B.topics=[pick(B.sub)];C.sub="本周错题 + 周小结";C.note="逐题三分类；写本周 4 个数字";}
+ else if(i===5){A.sub="周测 / 整卷计时";A.topics=[{id:"—",name:"09:15 起整卷计时（对齐英文 P3 考试钟）",points:["上午计时整卷","下午逐题三分类归因","选修单元精读"]}];B.sub="错题归因 + 选修精读";B.topics=[pick("物理"),pick("化学")].filter(Boolean);C.sub="休息半日";C.note="倦怠不是意志问题，是排程问题";}
+ else {A.sub="周测";A.topics=[{id:"—",name:"周日周测（数学／中文／公社）",points:["按 WEEKTEST 时段","16:30–18:30 固定占用不动"]}];B.sub="周复盘 20′";B.topics=[{id:"—",name:"4 个数字 + 下周预排",points:["英 P3 正确率","化学 MC 正确率","物理或 M2 整卷分","净复习时数"]}];C.sub="完全休息半日";C.note="硬规则：每周留一个半日完全休息";}
+ return [A,B,C].filter(x=>x&&x.sub!=="—");
+}
+
+/* ---------- 状态 ---------- */
+function blank(){return{
+ ab:{},                 // 用户覆盖的 A/B 周
+ suppOverride:null,     // 用户稍后补的补课表（预留）
+ schoolOverride:null,   // 用户稍后补的课程表（预留）
+ mistakes:[],           // 错题本
+ questions:[],          // 当前 50 题
+ answers:{},            // 作答
+ graded:false,
+ testRecords:{},        // key: 周一日期|科目 → {done,score,note}
+ dailyLogs:{},          // key: date → 3 行日结
+ quizMeta:{}            // 上次生成指令的日期/错题数
+}}
+let D=blank();
+try{const raw=localStorage.getItem(KEY);if(raw)D=Object.assign(blank(),JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){alert("本机存储失败，请到资料页导出备份")}}
+function abWeek(ds){
+ const m=mondayOf(ds);
+ if(D.ab[m])return D.ab[m];
+ if(AB_DEFAULT[m])return AB_DEFAULT[m];
+ // 未列出：找最近的已知周按交替推算
+ const keys=Object.keys(AB_DEFAULT).sort();let base=null;
+ for(const k of keys)if(k<=m)base=k;
+ if(!base)return "A";
+ const n=diffDays(base,m)/7;
+ return (Math.round(n)%2===0)?AB_DEFAULT[base]:(AB_DEFAULT[base]==="A"?"B":"A");
+}
+function supplementOf(ds){
+ if(ds>SUPP_END||ds<"2026-09-07")return null;
+ const i=wdIdx(ds);if(i>4)return null;
+ if(NO_LESSON.has(ds))return null;
+ const ab=abWeek(ds),row=SUPP[ab]&&SUPP[ab][i+1];
+ if(!row)return null;
+ return Object.assign({ab:ab,long:false,time:row.long?"16:05–18:00":"16:05–17:00"},row);
+}
+function weekTestOf(ds){const i=wdIdx(ds);return WEEKTEST.filter(t=>t.wd===i)}
+function marksOf(ds){
+ const m=[],i=wdIdx(ds);
+ const ex=EXAMS.find(e=>e.d===ds);if(ex)m.push({icon:ex.icon,text:ex.n,cls:"t-red"});
+ if(ds>=ORAL.s&&ds<=ORAL.e)m.push({icon:"🗣️",text:"英文口试期",cls:"t-yel"});
+ const g=GATES.find(x=>x.d===ds);if(g)m.push({icon:"🚩",text:g.n,cls:"t-yel"});
+ const sp=supplementOf(ds);if(sp)m.push({icon:"🔵",text:"补课 "+sp.sub+(sp.long?"（至18:00）":""),cls:"t-blu"});
+ if(MAKEUP[ds])m.push({icon:"🔁",text:"补"+MAKEUP[ds]+"课",cls:"t-blu"});
+ if(OLE.has(ds))m.push({icon:"⭐",text:"OLE 活动课",cls:"t-grn"});
+ if(NO_LESSON.has(ds))m.push({icon:"⛔",text:"校历：无补课",cls:"t-red"});
+ const wt=weekTestOf(ds);if(wt.length)m.push({icon:"📝",text:"周测 "+wt.length+" 科",cls:"t-yel"});
+ if(i===6&&ds<="2027-04-23")m.push({icon:"🔁",text:"周复盘 20′",cls:"t-grn"});
+ if(ds==="2026-09-07")m.push({icon:"▶️",text:"S6 增值计划开始",cls:"t-blu"});
+ if(ds===SUPP_END)m.push({icon:"⏹",text:"S6 完结补课",cls:"t-blu"});
+ return m;
+}
+
+/* ---------- 渲染：今日 ---------- */
+let CUR=today();
+function go(t){document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id==="tab-"+t));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+ if(t==="calendar")renderCalendar();if(t==="test")renderWeekTests();
+ if(t==="mistake")renderMistakes();if(t==="data")renderData();
+ window.scrollTo(0,0)}
+function goToday(){CUR=today();document.getElementById("pickDate").value=CUR;renderAll()}
+function renderHero(){
+ const p=phaseOf(CUR),wk=weekOf(CUR),ab=abWeek(CUR),sp=supplementOf(CUR);
+ document.getElementById("heroDate").textContent=CUR.slice(5)+" 周"+wdName(CUR);
+ document.getElementById("heroMeta").textContent=`${CUR} · Week ${ab} · ${wk?"W"+wk.w+" / "+wk.p:"考试期或计划外"} · ${p.id} ${p.name}`;
+ document.getElementById("heroDday").textContent=diffDays(CUR,"2027-04-08")+" 天";
+ document.getElementById("heroPhase").textContent=p.id+" "+p.name;
+ const total=diffDays(p.s,p.e)||1,done=Math.max(0,diffDays(p.s,CUR));
+ document.getElementById("heroBar").style.width=Math.min(100,Math.round(done/total*100))+"%";
+ const c=[["英文 P3",diffDays(CUR,"2027-04-10")],["化学",diffDays(CUR,"2027-04-15")],
+  ["物理",diffDays(CUR,"2027-04-21")],["M2",diffDays(CUR,"2027-04-23")],["口试",diffDays(CUR,"2027-03-09")]];
+ document.getElementById("heroChips").innerHTML=c.map(([n,d])=>`<div class="chip">${n} <b>${d}</b> 天</div>`).join("");
+ // 错题简报
+ const pend=D.mistakes.filter(m=>m.rework_pending!==false);
+ document.getElementById("mistakeBrief").innerHTML=pend.length
+  ? `🔖 尚有 <b>${pend.length}</b> 条错题待回炉（其中红标 ${D.mistakes.filter(m=>m.red&&m.rework_pending!==false).length} 条）。生成 50 题指令时会自动带入。`
+  : `✅ 目前没有待回炉错题；仍会检查上一次 50 题是否产生新错题。`;
+ renderDay();
+}
+function renderDay(){
+ const wk=weekOf(CUR),p=phaseOf(CUR),sp=supplementOf(CUR),wt=weekTestOf(CUR),mk=marksOf(CUR);
+ document.getElementById("dayHead").innerHTML=
+  `<b>${CUR}</b>（周${wdName(CUR)}／Week ${abWeek(CUR)}）· ${p.id} ${p.name}${wk?" · W"+wk.w:""}　${wk?'<span class="badge">'+esc(wk.ms)+'</span>':''}`;
+ const bs=blocksOf(CUR);
+ document.getElementById("blocks").innerHTML=bs.map((b,i)=>{
+  const cls=["","b2","b3"][i]||"";
+  const col=SCOLOR[b.sub]?"<span class='tag "+SCOLOR[b.sub]+"'>"+esc(b.sub)+"</span>":"";
+  const tops=b.topics.filter(Boolean).map(t=>
+   `<div class="topic">📌 ${esc(t.name)}</div>`+
+   (t.points&&t.points.length?t.points.map(x=>`<div class="pt">· ${esc(x)}</div>`).join(""):"")
+  ).join("");
+  return `<div class="block ${cls}"><div class="h"><span>${esc(b.slot)} ${col}</span><span class="sub">${esc(b.sub)}</span></div>${tops||'<div class="pt">—</div>'}<div class="pt" style="margin-top:6px;color:var(--warn)">${esc(b.note||"")}</div></div>`;
+ }).join("");
+ let extra=`<h3>🔵 今日校内 / 补课</h3>`;
+ extra+=`<div class="kv"><span>在校重点（图1）</span><b>${(SCHOOL[wdIdx(CUR)]||[]).join(" ｜ ")||"—"}</b></div>`;
+ extra+=sp?`<div class="kv"><span>增值补课（图3 蓝标 · Week ${sp.ab}）</span><b>${esc(sp.code)} · ${esc(sp.sub)} · ${esc(sp.time)} · 室 ${esc(sp.room)}</b></div>`
+           :`<div class="kv"><span>增值补课</span><b>—（校历无补课 / 已过 1/27）</b></div>`;
+ if(wt.length){extra+=`<h3>📝 今日周测（${wt.length} 科）</h3>`;
+  wt.forEach(t=>{const k=mondayOf(CUR)+"|"+t.sub,r=D.testRecords[k]||{};
+   extra+=`<div class="kv"><span>${esc(t.time)} · ${esc(t.sub)}</span><b>${esc(t.scope)} ${r.done?"✅ "+esc(r.score||""):"⬜ 未做"}</b></div>`});}
+ if(mk.length){extra+=`<h3>🚩 日历标记</h3><div class="row">`+mk.map(x=>`<span class="tag ${x.cls}">${x.icon} ${esc(x.text)}</span>`).join("")+`</div>`;}
+ extra+=`<div class="hr"></div><div class="row"><button class="btn2" onclick="buildPrompt();go('quiz')">📋 为今天生成 50 题指令</button></div>`;
+ document.getElementById("dayExtra").innerHTML=extra;
+}
+
+/* ---------- 错题检查（功能三核心） ---------- */
+function mistakeCheck(ds){
+ const bs=blocksOf(ds),subs=[...new Set(bs.map(b=>b.sub).filter(s=>SYL[s]))];
+ const all=D.mistakes||[];
+ const pend=all.filter(m=>m.rework_pending!==false);
+ const rel=pend.filter(m=>subs.includes(m.subject)||m.date===ds);
+ const red=pend.filter(m=>m.red);
+ const lastQuiz=D.questions.length?D.questions.filter(q=>q._wrong).length:0;
+ // ⚠️ 上一次 50 题产生的错题已经写进 mistakes 并计入 rel，
+ // 不能再叠加一次，否则 need 会虚高（同一批错题被算两遍）。
+ const basis=rel.length>0?rel.length:Math.min(pend.length,5);
+ return {subs:subs,pend:pend,rel:rel,red:red,lastQuiz:lastQuiz,
+  ok:pend.length===0,
+  need:Math.max(5,Math.min(15,basis))};
+}
+function runMistakeCheck(){
+ const c=mistakeCheck(CUR);
+ const html=`<div class="${c.ok?"hint":"errbox"}"><b>🔍 错题检查报告 · ${CUR}</b><br>
+ 今日科目：${c.subs.map(esc).join("、")||"—"}<br>
+ 待回炉错题：<b>${c.pend.length}</b> 条（与本日课题相关 <b>${c.rel.length}</b> 条，红标 <b>${c.red.length}</b> 条）<br>
+ 上一次 50 题产生的错题：<b>${c.lastQuiz}</b> 条<br>
+ ${c.ok?"✅ 全部已回炉／无新错题，本次指令仍会要求避免重复历史题目。":"⚠️ 本次指令将<b>强制包含 "+c.need+" 道错题变式</b>（source=mistake_rework），否则不算复习到位。"}</div>`;
+ document.getElementById("checkReport").innerHTML=html;
+ return c;
+}
+
+/* ---------- 50 题指令 ---------- */
+function buildPrompt(){
+ const c=runMistakeCheck(),bs=blocksOf(CUR),wk=weekOf(CUR);
+ const lines=[];
+ lines.push("你是 HKDSE 2027 考生的出题教练。请依据以下「当日复习卡」生成 **50 道题**，并只输出一个 JSON 数组（可包在 ```json … ``` 内），不要输出任何额外说明文字。");
+ lines.push("");
+ lines.push("【考生背景】2027 HKDSE，选修 M2／化学／物理；物理选修 E2 原子世界 + E3 能量和能源的使用；化学选修工业化学（卷二第二选修待确认）。目标：英 3（门槛）／化 4／数·M2·物 5–5*／中 3／公社 A。");
+ lines.push("【日期】"+CUR+"（周"+wdName(CUR)+"，Week "+abWeek(CUR)+"，"+phaseOf(CUR).id+(wk?"，W"+wk.w:"")+"）");
+ lines.push("");
+ lines.push("【当日复习卡｜50 题必须覆盖以下全部课题，不得超范围】");
+ // 段数会因固定占用日（周四）变成 2 段，配额要动态分配且合计恒为 50
+ const quotas=bs.length===1?[50]:bs.length===2?[30,20]:bs.length===3?[20,20,10]:bs.map((_,i)=>i===bs.length-1?10:Math.round(40/(bs.length-1)));
+ let n=0;
+ bs.forEach((b,i)=>{
+  const quota=quotas[i]||10;
+  const tops=b.topics.filter(Boolean);
+  lines.push(`段${["A","B","C","D"][i]||(i+1)}｜科目：${b.sub}｜配题 ${quota} 道｜时段 ${b.slot}`);
+  tops.forEach(t=>{lines.push(`  · 课题：${t.name}`);(t.points||[]).forEach(p=>lines.push(`      - ${p}`));});
+  if(!tops.length)lines.push("  · 课题：错题回炉 / 保温维持（自行按科目合理命题）");
+  n+=quota;
+ });
+ if(n!==50){quotas[quotas.length-1]+=50-n;n=50;lines.push(`（末段配题已调整为 ${quotas[quotas.length-1]} 道）`);}
+ lines.push(`合计 ${n} 道。`);
+ lines.push("");
+ lines.push("【题型分配】选择题 mcq 约 55%、短答 short 约 25%、计算 numeric 约 20%；物理／化学／M2 的计算题必须在 explanation 写出完整步骤、单位与有效数字；英文题以 Paper 3 情境为主（Data File 整合、笔记、文体格式）。");
+ lines.push("");
+ lines.push("【⚠️ 错题回炉检查（每次生成都必须执行）】");
+ if(c.rel.length){
+  lines.push(`以下是尚未回炉的错题，必须出至少 ${c.need} 道「变式题」（换数字／换情境／换问法，不要原题目照抄），并把这些题的 source 标为 "mistake_rework"、mistake_ref 填对应编号：`);
+  c.rel.slice(0,15).forEach((m,i)=>lines.push(`  [M${i+1}] ${m.subject}｜${m.topic||"—"}｜${String(m.text||"").slice(0,90)}`));
+ }else{
+  lines.push(`本日课题没有直接对应的待回炉错题${c.pend.length?`（其他科目尚有 ${c.pend.length} 条待回炉，下次轮到该科时会处理）`:""}。仍请安排 ${c.need} 道「易错点预防题」，覆盖上述课题最常见的失分点，source 标为 "mistake_rework"。`);
+ }
+ lines.push(`至少 ${c.need} 道题的 source 必须是 "mistake_rework"（HTML 会校验，不足会警告）。`);
+ const used=[...new Set((D.questions||[]).map(q=>q.topic))].filter(Boolean);
+ if(used.length)lines.push("【避免重复】已出过的课题标签："+used.slice(0,20).join("、")+"；新题请换角度或换数据。");
+ lines.push("");
+ lines.push("【输出 JSON schema｜严格 50 个物件】");
+ lines.push('[{"id":"Q1","subject":"科目名","topic":"课题名","type":"mcq|short|numeric",');
+ lines.push('"q":"题干","options":["A. …","B. …","C. …","D. …"],');
+ lines.push('"answer":"正确答案（mcq 填 A/B/C/D；short 填关键词，可用 | 分隔同义；numeric 填数字）",');
+ lines.push('"unit":"单位（numeric 可选）","explanation":"详解 + 踩分点","difficulty":"1-3",');
+ lines.push('"source":"new|mistake_rework","mistake_ref":"M1（变式题才填）"}]');
+ lines.push("");
+ lines.push("【自检要求】输出前逐项确认：① 恰好 50 题；② 三段课题全覆盖；③ 每题有唯一答案与 explanation；④ mcq 恰有 4 个 options；⑤ source=mistake_rework 的题数 ≥ "+c.need+"；⑥ 不含超范围内容（M2 不出复数／洛必达／弧长／矩阵对角化／反三角函数；物理不出 E4 医学物理；数学必修不出极坐标）。");
+ document.getElementById("promptOut").textContent=lines.join("\n");
+ D.quizMeta={date:CUR,need:c.need,rel:c.rel.length,at:today(),
+  refs:c.rel.slice(0,15).map((_,i)=>"M"+(i+1)),
+  mIdx:c.rel.slice(0,15).map(m=>D.mistakes.indexOf(m)).filter(i=>i>=0)};save();
+ go("quiz");
+}
+
+/* ---------- 题目载入 / 校验 ---------- */
+function parseJSONLoose(t){
+ let s=String(t).trim();
+ const m=s.match(/```(?:json)?\s*([\s\S]*?)```/i);if(m)s=m[1].trim();
+ s=s.replace(/,\s*([}\]])/g,"$1");
+ return JSON.parse(s);
+}
+function loadQuestions(){
+ const t=document.getElementById("qInput").value.trim();if(!t)return alert("请先粘贴 AI 回覆的 JSON");
+ let arr;try{arr=parseJSONLoose(t)}catch(e){document.getElementById("qValidate").innerHTML=`<div class="errbox">❌ JSON 解析失败：${esc(e.message)}<br>请确认回覆是纯 JSON 数组，或包在 \`\`\`json 里。</div>`;return}
+ if(!Array.isArray(arr)){document.getElementById("qValidate").innerHTML=`<div class="errbox">❌ 顶层必须是阵列。</div>`;return}
+ const errs=[];
+ arr.forEach((q,i)=>{
+  if(!q.id)q.id="Q"+(i+1);
+  if(!q.q)errs.push(`第 ${i+1} 题缺 q（题干）`);
+  if(!q.answer&&q.answer!==0)errs.push(`${q.id} 缺 answer`);
+  if(!q.subject)errs.push(`${q.id} 缺 subject`);
+  if(!["mcq","short","numeric"].includes(q.type))errs.push(`${q.id} type 必须是 mcq/short/numeric`);
+  if(q.type==="mcq"&&(!Array.isArray(q.options)||q.options.length!==4))errs.push(`${q.id} mcq 需 4 个 options`);
+ });
+ const c=mistakeCheck(CUR),need=D.quizMeta.need||c.need;
+ const rw=arr.filter(q=>q.source==="mistake_rework").length;
+ let html="";
+ if(arr.length!==50)html+=`<div class="errbox">⚠️ 题数为 <b>${arr.length}</b>，要求 50 题。仍可做题，但建议叫 AI 补齐。</div>`;
+ if(errs.length)html+=`<div class="errbox">❌ 字段校验：<br>${errs.slice(0,12).map(esc).join("<br>")}${errs.length>12?"<br>…":""}</div>`;
+ if(rw<need)html+=`<div class="errbox">⚠️ <b>错题检查未通过</b>：需要 ≥ ${need} 道错题变式，实际只有 ${rw} 道。请叫 AI 补齐 source=mistake_rework 的题目再粘贴。</div>`;
+ else html+=`<div class="hint">✅ 错题检查通过：${rw} 道错题变式（要求 ≥ ${need}）。</div>`;
+ if(!errs.length&&arr.length===50&&rw>=need)html=`<div class="hint">✅ 全部校验通过：50 题 · 字段完整 · 错题回炉 ${rw} 道。</div>`+html;
+ document.getElementById("qValidate").innerHTML=html;
+ D.questions=arr;D.answers={};D.graded=false;save();
+ // 只把「本次指令确实引用过」的错题标为已回炉，避免一次清掉全部待回炉
+ if(rw>=need){
+  const idx=D.quizMeta.mIdx||[];
+  idx.forEach(i=>{if(D.mistakes[i])D.mistakes[i].rework_pending=false});
+  // 变式题若带 mistake_ref，也按编号标记
+  arr.filter(q=>q.source==="mistake_rework"&&q.mistake_ref).forEach(q=>{
+   const k=parseInt(String(q.mistake_ref).replace(/[^0-9]/g,""),10)-1;
+   if(k>=0&&idx[k]!==undefined&&D.mistakes[idx[k]])D.mistakes[idx[k]].rework_pending=false;
+  });
+  save();
+ }
+ renderQuestions();renderMistakes();renderHero();
+}
+function loadDemo(){
+ document.getElementById("qInput").value=JSON.stringify([
+  {id:"Q1",subject:"英国语文",topic:"P3 全卷结构与题型",type:"mcq",q:"In Paper 3, what should you do in the first 90 seconds before the recording starts?",options:["A. Write the full essay","B. Scan questions, underline keywords and predict numbers/names","C. Listen to music","D. Copy the Data File"],answer:"B",explanation:"听前扫题、圈关键词、预测词性／数字／人名，是 P3 的固定起手式。",difficulty:"1",source:"new"},
+  {id:"Q2",subject:"化学",topic:"计量关系与摩尔",type:"numeric",q:"Calculate the amount (in mol) of NaCl in 250 cm³ of 0.40 mol dm⁻³ solution.",options:[],answer:"0.10",unit:"mol",explanation:"n = C × V = 0.40 × 0.250 = 0.10 mol；必须先写式子再代数字，并写单位。",difficulty:"1",source:"new"},
+  {id:"Q3",subject:"物理",topic:"方法分与单位检查",type:"short",q:"State one reason why showing full working can still earn marks even if the final answer is wrong.",options:[],answer:"方法分|步骤分|method",explanation:"DSE 物理按步骤给方法分；写出公式、代入、单位即可得分。",difficulty:"1",source:"mistake_rework",mistake_ref:"M1"}
+ ],null,2);
+ alert("已载入 3 题示范（非 50 题，用来测试判分流程）。按「载入并校验」继续。");
+}
+function clearQuestions(){D.questions=[];D.answers={};D.graded=false;save();renderQuestions();document.getElementById("qValidate").innerHTML=""}
+function renderQuestions(){
+ const list=document.getElementById("qList");
+ if(!D.questions.length){list.innerHTML='<div class="sub" style="margin:10px 0">尚未载入题目。到 ② 粘贴 AI 回覆，或按「载入 3 题示范」测试。</div>';
+  document.getElementById("qProgress").textContent="未载入题目";document.getElementById("qResult").innerHTML="";return}
+ document.getElementById("qProgress").textContent=`共 ${D.questions.length} 题｜已答 ${Object.keys(D.answers).length} 题${D.graded?"｜已判分":""}`;
+ list.innerHTML=D.questions.map((q,i)=>{
+  let body="";
+  const fb=D.graded?(()=>{const r=gradeOne(q,D.answers[q.id]);return `<div class="fb ${r.ok?"ok":"no"}">${r.ok?"✅ 正确":"❌ 错误"}　正确答案：<b>${esc(Array.isArray(q.answer)?q.answer.join(" / "):q.answer)}</b>${q.unit?" "+esc(q.unit):""}<br>${esc(q.explanation||"")}</div>`})():"";
+  if(q.type==="mcq"){
+   body=(q.options||[]).map((o,j)=>{
+    const letter="ABCD"[j],sel=D.answers[q.id]===letter;
+    let cl="opt"+(sel?" sel":"");
+    if(D.graded){const ans=String(q.answer).trim().toUpperCase();if(letter===ans)cl+=" right";else if(sel)cl+=" wrong"}
+    return `<div class="${cl}" onclick="pickOpt(${i},'${letter}')">${esc(o)}</div>`;
+   }).join("");
+  }else{
+   body=`<input class="ans" id="ans_${i}" value="${esc(D.answers[q.id]||"")}" placeholder="${q.type==="numeric"?"填数字":"填关键词／短答"}" oninput="setAns(${i},this.value)" ${D.graded?"disabled":""}>`;
+  }
+  return `<div class="q"><div class="qh"><span>#${i+1} <span class="tag ${SCOLOR[q.subject]||"t-blu"}">${esc(q.subject)}</span></span>
+   <span>${esc(q.topic||"")} · ${esc(q.type)}${q.source==="mistake_rework"?' · 🔁 错题变式':""}</span></div>
+   <div class="qt">${esc(q.q)}</div>${body}${fb}</div>`;
+ }).join("");
+}
+function pickOpt(i,l){if(D.graded)return;const q=D.questions[i];if(!q)return;D.answers[q.id]=l;save();renderQuestions()}
+function setAns(i,v){if(D.graded)return;const q=D.questions[i];if(!q)return;D.answers[q.id]=v;save()}
+function resetAnswers(){D.answers={};D.graded=false;D.questions.forEach(q=>delete q._wrong);save();renderQuestions();document.getElementById("qResult").innerHTML=""}
+function norm(s){return String(s==null?"":s).toLowerCase().replace(/[\s，,。．.、；;：:！!？?（）()「」『』"'"']/g,"").trim()}
+function gradeOne(q,a){
+ if(a==null||a==="")return {ok:false,empty:true};
+ const ans=q.answer;
+ if(q.type==="mcq")return {ok:String(a).trim().toUpperCase()===String(ans).trim().toUpperCase()};
+ if(q.type==="numeric"){
+  const x=parseFloat(String(a).replace(/[^\d.\-eE]/g,"")),y=parseFloat(String(ans).replace(/[^\d.\-eE]/g,""));
+  if(isNaN(x)||isNaN(y))return {ok:norm(a)===norm(ans)};
+  return {ok:Math.abs(x-y)<=Math.max(1e-6,Math.abs(y)*0.005)};
+ }
+ // short：关键词命中
+ const keys=String(ans).split(/[|｜/、,，]/).map(norm).filter(Boolean);
+ const n=norm(a);if(!keys.length)return {ok:n===norm(ans)};
+ const hit=keys.filter(k=>n.includes(k)||k.includes(n)).length;
+ return {ok:hit>=Math.ceil(keys.length*0.6)||n===norm(ans)};
+}
+function submitAnswers(){
+ if(!D.questions.length)return alert("尚未载入题目");
+ let right=0,wrong=[];
+ D.questions.forEach(q=>{const r=gradeOne(q,D.answers[q.id]);q._wrong=!r.ok;if(r.ok)right++;else wrong.push(q)});
+ D.graded=true;save();renderQuestions();
+ const rate=Math.round(right/D.questions.length*100);
+ // 错题入库（功能三：每次做题后检查错题）
+ wrong.forEach(q=>{
+  D.mistakes.unshift({date:CUR,subject:q.subject,topic:q.topic||"—",
+   text:`[${q.id}] ${String(q.q).slice(0,80)} → 你的答案 ${D.answers[q.id]||"（空）"} / 正解 ${Array.isArray(q.answer)?q.answer.join("/"):q.answer}`,
+   type:"概念缺口",red:true,rework_pending:true,ref:q.id});
+ });
+ save();
+ document.getElementById("qResult").innerHTML=`<div class="${wrong.length?"errbox":"hint"}"><b>判分结果：${right} / ${D.questions.length}（${rate}%）</b><br>
+  ${wrong.length?`❌ 新增 <b>${wrong.length}</b> 条错题，已自动写入错题本并标 <code>rework_pending</code>；下一次生成 50 题指令会强制带出变式题。`:`✅ 全对，没有新错题；下次指令仍会做防重复检查。`}<br>
+  ${rate<70?"⚠️ 正确率未达 70%，建议把该课题放回明天段 A 重做一次主动回忆。":"✅ 本日课题暂算复习到位，可进入下一课题。"}</div>`;
+ renderMistakes();renderHero();
+}
+
+/* ---------- 周测 ---------- */
+let WT_OFFSET=0;
+function shiftWeek(n){WT_OFFSET=n===0?0:WT_OFFSET+n;renderWeekTests()}
+function renderWeekTests(){
+ const mon=mondayOf(addDays(today(),WT_OFFSET*7));
+ const sun=addDays(mon,6);
+ document.getElementById("weekTestHead").textContent=`${mon} → ${sun}（Week ${abWeek(mon)}）${weekOf(mon)?" · W"+weekOf(mon).w:""}`;
+ const wk=weekOf(mon);
+ document.getElementById("weekTestList").innerHTML=WEEKTEST.map((t,i)=>{
+  const d=addDays(mon,t.wd),key=mon+"|"+t.sub,r=D.testRecords[key]||{};
+  const topics=(wk&&wk.t[t.sub]||[]).map(id=>topicOf(t.sub,id).name);
+  return `<div class="item"><div class="row"><b>${["六","日"][t.wd-5]} ${d} · ${esc(t.time)}</b>
+   <span class="tag ${SCOLOR[t.sub]}">${esc(t.sub)}</span></div>
+   <div style="margin-top:4px">范围：${esc(t.scope)}｜题量 ${esc(t.n)}｜${t.dur}′</div>
+   <div class="meta">本周课题：${topics.length?topics.map(esc).join("、"):"按上周错题回炉"}　${r.done?"✅ 已完成 "+esc(r.score||""):"⬜ 未完成"}</div>
+   <div class="row" style="margin-top:7px">
+     <input class="grow" style="min-width:100px" id="sc_${i}" placeholder="分数／正确率" value="${esc(r.score||"")}">
+     <button class="btn2" onclick="saveTest('${key}',${i})">💾 记录</button>
+     ${r.done?`<button class="mini" onclick="undoTest('${key}')">撤销</button>`:""}
+   </div></div>`;
+ }).join("");
+ const rec=Object.entries(D.testRecords).filter(([k,v])=>v.done).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,14);
+ document.getElementById("testHistory").innerHTML=rec.length?`<table><tr><th>周</th><th>科目</th><th>成绩</th><th>备注</th></tr>`+
+  rec.map(([k,v])=>`<tr><td>${k.split("|")[0]}</td><td>${esc(k.split("|")[1])}</td><td><b>${esc(v.score||"—")}</b></td><td>${esc(v.note||"")}</td></tr>`).join("")+"</table>"
+  :'<div class="sub">暂无周测记录。</div>';
+}
+function saveTest(key,i){const s=document.getElementById("sc_"+i).value.trim();
+ D.testRecords[key]={done:!!s,score:s,note:s?"":"未填分数"};save();renderWeekTests()}
+function undoTest(key){delete D.testRecords[key];save();renderWeekTests()}
+
+/* ---------- 日历 ---------- */
+let CAL_Y=parseD(today()).getFullYear(),CAL_M=parseD(today()).getMonth();
+function shiftMonth(n){CAL_M+=n;if(CAL_M<0){CAL_M=11;CAL_Y--}if(CAL_M>11){CAL_M=0;CAL_Y++}renderCalendar()}
+function calToday(){CAL_Y=parseD(today()).getFullYear();CAL_M=parseD(today()).getMonth();renderCalendar()}
+function pickCalDate(){const v=document.getElementById("calPick").value;if(!v)return;
+ const d=parseD(v);CAL_Y=d.getFullYear();CAL_M=d.getMonth();renderCalendar();CUR=v;document.getElementById("pickDate").value=v;showCalDetail(v)}
+function renderCalendar(){
+ const first=new Date(CAL_Y,CAL_M,1),start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
+ document.getElementById("calTitle").textContent=CAL_Y+" 年 "+(CAL_M+1)+" 月";
+ let html=["一","二","三","四","五","六","日"].map(x=>`<div class="wd">${x}</div>`).join("");
+ for(let i=0;i<42;i++){
+  const d=new Date(start);d.setDate(start.getDate()+i);const ds=fmt(d);
+  const out=d.getMonth()!==CAL_M,mk=marksOf(ds),ab=abWeek(ds);
+  const dots=mk.slice(0,4).map(x=>`<span class="dot" style="background:${x.cls==="t-red"?"#fb7185":x.cls==="t-yel"?"#fbbf24":x.cls==="t-blu"?"#60a5fa":x.cls==="t-grn"?"#86efac":"#7dd3fc"}"></span>`).join("");
+  const txt=mk.length?mk[0].icon+" "+mk[0].text.slice(0,4):"";
+  html+=`<div class="cell ${out?"out":""} ${ds===today()?"today":""} ${ds===CUR?"sel":""}" ${out?"":`onclick="selDay('${ds}')"`}>
+   <div class="d">${d.getDate()}</div><div class="ab">${ab}</div>
+   <div class="mk">${esc(txt)}</div><div class="dots">${dots}</div></div>`;
+ }
+ document.getElementById("calGrid").innerHTML=html;
+ document.getElementById("calLegend").innerHTML=[
+  ["#fb7185","考试 / 停课"],["#fbbf24","Gate / 周测 / 口试"],["#60a5fa","校内补课"],["#86efac","OLE / 周复盘"],["#7dd3fc","其他"]
+ ].map(([c,n])=>`<span><i style="background:${c}"></i>${n}</span>`).join("")+
+  `<span>｜格右上 <b style="color:var(--purple)">A/B</b> = 校历周别</span>`;
+ showCalDetail(CUR);
+}
+function selDay(ds){CUR=ds;document.getElementById("pickDate").value=ds;renderCalendar();showCalDetail(ds);renderHero()}
+function showCalDetail(ds){
+ const wk=weekOf(ds),p=phaseOf(ds),sp=supplementOf(ds),wt=weekTestOf(ds),mk=marksOf(ds),bs=blocksOf(ds);
+ let h=`<div class="row"><b>${ds}</b><span class="sub">周${wdName(ds)} · Week ${abWeek(ds)} · ${p.id} ${p.name}${wk?" · W"+wk.w:""}</span></div>`;
+ h+=`<div class="row" style="margin:7px 0">${mk.length?mk.map(x=>`<span class="tag ${x.cls}">${x.icon} ${esc(x.text)}</span>`).join(""):'<span class="sub">无特别标记</span>'}</div>`;
+ h+=`<h3>当日复习</h3>`;
+ bs.forEach(b=>{const tops=b.topics.filter(Boolean).map(t=>t.name).join("、")||"—";
+  h+=`<div class="kv"><span>${esc(b.slot)} · ${esc(b.sub)}</span><b>${esc(tops)}</b></div>`});
+ h+=`<div class="kv"><span>校内补课</span><b>${sp?esc(sp.code+" · "+sp.sub+" · "+sp.time+" · 室"+sp.room):"—"}</b></div>`;
+ if(wt.length)h+=`<div class="kv"><span>周末周测</span><b>${wt.map(t=>esc(t.sub+" "+t.time)).join(" ｜ ")}</b></div>`;
+ if(wk)h+=`<div class="kv"><span>本周里程碑</span><b>${esc(wk.ms)}</b></div>`;
+ h+=`<div class="row" style="margin-top:9px"><button class="btn2" onclick="selDay('${ds}');go('today')">🎯 设为今日查看</button></div>`;
+ document.getElementById("calDetail").innerHTML=h;
+}
+
+/* ---------- 错题本 ---------- */
+function addMistake(){const t=document.getElementById("mText").value.trim();if(!t)return alert("请写题目位置或一句规则");
+ D.mistakes.unshift({date:CUR,subject:document.getElementById("mSubj").value,
+  topic:"手动新增",text:t,type:document.getElementById("mType").value,red:false,rework_pending:true});
+ document.getElementById("mText").value="";save();renderMistakes();renderHero()}
+function renderMistakes(){
+ document.getElementById("mSubj").innerHTML=SUBJECTS.map(s=>`<option>${s}</option>`).join("");
+ const a=D.mistakes;
+ document.getElementById("mistakeList").innerHTML=a.length?`<div class="sub" style="margin:8px 0">共 ${a.length} 条｜待回炉 ${a.filter(m=>m.rework_pending!==false).length} 条｜红标 ${a.filter(m=>m.red).length} 条</div>`+
+  a.map((m,i)=>`<div class="item" style="${m.red?"border-left:3px solid var(--danger)":""}">
+   <span class="tag ${m.type==="概念缺口"?"t-red":m.type==="审题失误"?"t-yel":"t-blu"}">${esc(m.type)}</span>
+   <b>${esc(m.subject)}</b> · ${esc(m.topic||"—")} · ${esc(m.date)}
+   ${m.rework_pending!==false?'<span class="tag t-red">待回炉</span>':'<span class="tag t-grn">已回炉</span>'}
+   <div style="margin-top:4px">${esc(m.text)}</div>
+   <div style="margin-top:6px"><button class="mini" onclick="toggleRedM(${i})">${m.red?"取消红标":"标红"}</button>
+    <button class="mini" onclick="toggleRework(${i})">${m.rework_pending!==false?"标为已回炉":"标为待回炉"}</button>
+    <button class="mini" onclick="delM(${i})">删除</button></div></div>`).join("")
+  :'<div class="sub" style="margin:10px 0">暂无错题。做完 50 题后会自动入库。</div>';
+}
+function toggleRedM(i){D.mistakes[i].red=!D.mistakes[i].red;save();renderMistakes()}
+function toggleRework(i){D.mistakes[i].rework_pending=!(D.mistakes[i].rework_pending!==false);save();renderMistakes();renderHero()}
+function delM(i){if(confirm("删除这条错题？")){D.mistakes.splice(i,1);save();renderMistakes();renderHero()}}
+function clearDoneMistakes(){if(!confirm("清除所有「已回炉」错题？"))return;
+ D.mistakes=D.mistakes.filter(m=>m.rework_pending!==false);save();renderMistakes();renderHero()}
+
+/* ---------- 资料 / 设置 ---------- */
+function renderData(){
+ document.getElementById("dataOverview").innerHTML=`
+  <div class="kv"><span>资料版本</span><b>v1.0 · 2026-11-16 建立（校历图片解析）</b></div>
+  <div class="kv"><span>逐周计划</span><b>W1–W21（${WEEKS.length} 周）</b></div>
+  <div class="kv"><span>课题库</span><b>${Object.values(SYL).reduce((n,o)=>n+Object.keys(o).length,0)} 个课题 / 7 科</b></div>
+  <div class="kv"><span>校内补课蓝标</span><b>7 项（A 周 4 · B 周 3）</b></div>
+  <div class="kv"><span>S6 补课期</span><b>2026-09-07 → 2027-01-27</b></div>
+  <div class="kv"><span>A/B 周覆盖</span><b>${Object.keys(D.ab).length} 笔用户覆写</b></div>
+  <div class="kv"><span>错题 / 题目 / 周测记录</span><b>${D.mistakes.length} / ${D.questions.length} / ${Object.keys(D.testRecords).length}</b></div>
+  <div class="kv"><span>待确认</span><b style="color:var(--warn)">化学卷二第二选修 · 周四/周日时段制式 · E2/E3 官方对照 · ⚠️ A/B 周解读（已收图片，待你确认）</b></div>`;
+ // 补课表
+ let sh=`<table><tr><th>周别</th><th>日</th><th>科目（蓝标）</th><th>代码</th><th>师/室</th><th>时间</th></tr>`;
+ ["A","B"].forEach(ab=>[1,2,3,4,5].forEach(i=>{const r=SUPP[ab][i];if(r)
+  sh+=`<tr><td>Week ${ab}</td><td>周${["一","二","三","四","五"][i-1]}</td><td><b>${esc(r.sub)}</b></td><td>${esc(r.code)}</td><td>${esc(r.teacher)} / ${esc(r.room)}</td><td>${r.long?"16:05–18:00":"16:05–17:00"}</td></tr>`}));
+ sh+="</table>";
+ document.getElementById("suppTable").innerHTML=sh;
+ // A/B 周
+ const mons=[];let m="2026-09-07";while(m<="2027-05-24"){mons.push(m);m=addDays(m,7)}
+ document.getElementById("abHint").textContent=`共 ${mons.length} 周；点击切换 A/B（改动只存本机，会即时影响补课与日历判定）。`;
+ document.getElementById("abList").innerHTML=mons.map(x=>{
+  const v=abWeek(x),user=!!D.ab[x];
+  return `<button class="mini" style="margin:2px;padding:4px 7px;${user?"border-color:var(--acc);color:var(--acc)":""}" onclick="toggleAB('${x}')">${x.slice(5)} <b>${v}</b></button>`;
+ }).join("");
+ // 在校课表
+ let sh2=`<table><tr><th>日</th><th>与你七科相关时段</th></tr>`;
+ [0,1,2,3,4].forEach(i=>sh2+=`<tr><td>周${["一","二","三","四","五"][i]}</td><td>${SCHOOL[i].map(esc).join("<br>")}</td></tr>`);
+ sh2+="</table>";
+ document.getElementById("schoolTable").innerHTML=sh2;
+}
+function toggleAB(m){const cur=abWeek(m);D.ab[m]=cur==="A"?"B":"A";save();renderData();renderHero();renderCalendar()}
+function exportData(){
+ const out=Object.assign({},D,{_meta:{exported_at:today(),tool:"dse_daily.html",version:"1.0",
+  note:"可连同主档案与 state.json 一起贴给 AI；AI 更新进度时请以 merge patch 处理。"}});
+ dl("dse_daily_data.json",JSON.stringify(out,null,2));
+}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{try{mergeObj(JSON.parse(r.result))}catch(x){alert("JSON 解析失败："+x.message)}};r.readAsText(f,"utf-8");e.target.value=""}
+function mergePasted(){try{mergeObj(JSON.parse(document.getElementById("pasteData").value))}catch(x){alert("JSON 解析失败："+x.message)}}
+function mergeObj(o){
+ if(!o||typeof o!=="object")return alert("资料格式不对");
+ ["ab","mistakes","questions","answers","testRecords","dailyLogs","quizMeta"].forEach(k=>{
+  if(o[k]!==undefined)D[k]=o[k]});
+ if(o.suppOverride!==undefined)D.suppOverride=o.suppOverride;
+ if(o.schoolOverride!==undefined)D.schoolOverride=o.schoolOverride;
+ save();renderAll();alert("✅ 已合并资料。若你补的是课程表／补课表，请再告诉我，我会把它接进排程逻辑。");
+}
+function renderAll(){renderHero();renderQuestions();renderWeekTests();renderCalendar();renderMistakes();renderData()}
+
+/* ---------- 启动 ---------- */
+document.getElementById("pickDate").value=CUR;
+document.getElementById("calPick").value=CUR;
+document.getElementById("pickDate").addEventListener("change",e=>{if(e.target.value){CUR=e.target.value;document.getElementById("calPick").value=CUR;renderHero();renderCalendar()}});
+CAL_Y=parseD(CUR).getFullYear();CAL_M=parseD(CUR).getMonth();
+renderAll();go("today");
+</script>
+<div class="foot">DSE 2027 备考档案包 · 考试日期以 HKEAA 准考证为准 · 校历按图片解析，如有出入请到「资料」修正</div>
+</body>
+</html>
