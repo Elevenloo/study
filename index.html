@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>DSE 2027 · 今日复习定位器</title>
+<title>🎯 DSE 2027 · 今日复习定位器（藍白升級版）</title>
 <style>
 :root{
  --bg:#0d1220;--card:#161f31;--card2:#1d2940;--line:#2b3a55;
@@ -94,12 +94,71 @@ th{color:var(--sub);font-weight:600}
 .foot{color:var(--sub);font-size:11px;text-align:center;margin-top:18px}
 .hr{height:1px;background:var(--line);margin:12px 0}
 .badge{font-size:10px;padding:1px 6px;border-radius:99px;background:#26354d;color:#bcd3f0}
+
+/* ===== 藍白主題（我的） ===== */
+:root{--bg:#f1f7ff;--card:#ffffff;--card2:#f6faff;--line:#d5e5fa;
+ --tx:#142b4a;--sub:#5d7597;--acc:#1d4ed8;--acc2:#0284c7;
+ --warn:#b45309;--danger:#be123c;--ok:#15803d;--blue:#2563eb;--purple:#6d28d9}
+body{background:var(--bg);color:var(--tx)}
+.card,.block,.item,.q,.chip,.pcard,.edbox{background:var(--card);border-color:var(--line)}
+.block.b2,.block.b3{background:var(--card)}
+.hero{background:linear-gradient(140deg,#e3efff,#f8fcff);border-color:#b9d5f7}
+.big{color:var(--acc)}
+.btn{background:var(--acc);color:#fff}
+.btn2,.mini,.tgl{background:var(--card2);color:var(--tx);border-color:var(--line)}
+.mini{color:var(--sub)}
+input,select,textarea,.ans,.opt{background:#fff;color:var(--tx);border-color:var(--line)}
+pre,.mono{background:#f4f9ff;color:#29415f;border-color:var(--line)}
+.bar{background:#dceafc}
+nav{background:rgba(255,255,255,.96);border-top-color:var(--line)}
+nav button{color:var(--sub)}nav button.on{color:var(--acc)}
+.tag{background:#eef5ff;color:#1e40af}
+.t-eng{background:#e0f2fe;color:#075985}.t-chem{background:#fef3c7;color:#92400e}
+.t-phy{background:#dbeafe;color:#1e40af}.t-math{background:#ede9fe;color:#5b21b6}
+.t-m2{background:#e0e7ff;color:#3730a3}.t-chi{background:#ffe4e6;color:#9f1239}
+.t-cs{background:#dcfce7;color:#166534}
+.t-red{background:#ffe4e6;color:#9f1239}.t-yel{background:#fef3c7;color:#92400e}
+.t-grn{background:#dcfce7;color:#166534}.t-blu{background:#dbeafe;color:#1e40af}
+.hint{background:#eef7ff;border-color:#b9d9f7;color:#1e4b7a}
+.warnbox{background:#fff7ed;border-color:#fcd9a8;color:#8a4b0c}
+.errbox{background:#fff1f3;border-color:#fbc7d2;color:#9f1239}
+.opt.sel{border-color:var(--acc);background:#e8f1ff}
+.opt.right{border-color:var(--ok);background:#e7f7ec}
+.opt.wrong{border-color:var(--danger);background:#ffe9ee}
+.fb.ok{background:#e7f7ec;color:#166534}.fb.no{background:#ffe9ee;color:#9f1239}
+.cell{background:#fff;border-color:var(--line)}
+.cell.sel{background:#e8f1ff;border-color:var(--acc)}
+.cell.today{box-shadow:0 0 0 1px var(--acc) inset}
+.cal .wd,.foot,.progress,.legend{color:var(--sub)}
+.kv,th,td,.hr{border-color:var(--line)}
+.badge{background:#e3efff;color:#1e40af}
+.pbar{background:#dceafc}
+
+/* ===== v2 升級樣式 ===== */
+.pbar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
+.pbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:99px;transition:width .3s}
+.pcard{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 11px;margin:8px 0}
+.tgl{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:3px 7px;margin:3px 4px 0 0;
+ background:var(--card);border:1px solid var(--line);border-radius:99px;cursor:pointer;color:var(--sub)}
+.tgl.on{border-color:var(--acc);color:var(--acc);background:var(--card2)}
+.tgl button{background:none;border:0;color:var(--danger);cursor:pointer;padding:0 2px;font-size:11px}
+.donebtn{float:right;font-size:10px;padding:2px 6px;margin-left:6px}
+.donebtn.on{border-color:var(--acc);color:var(--acc)}
+.edrow{display:flex;gap:6px;align-items:center;margin:6px 0;flex-wrap:wrap}
+.edrow input,.edrow select{margin:0}
+.edrow .g{flex:1;min-width:110px}
+.edbox{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px;margin:9px 0}
+.edbox h3{margin-top:0}
+.needfill{border-left:3px solid var(--warn)}
+.q .qt{white-space:pre-wrap}
+
 </style>
 </head>
 <body>
 
-<h1>🎯 DSE 2027 · 今日复习定位器</h1>
-<div class="sub">打开即显示今天要复习的科目与课题 · 资料存本机 · 依据校历图片与主档案 v1.1 建立</div>
+<h1>🎯 DSE 2027 · 今日复习定位器（藍白升級版）</h1>
+<div class="sub" id="siteSub">打开即显示今天要复习的科目与课题 · 離線 50 題／進度條／可視化編輯 · 資料存本機（舊進度保留）</div>
+<div id="profileBanner"></div>
 
 <section id="tab-today" class="on">
   <div class="card hero">
@@ -150,7 +209,8 @@ th{color:var(--sub);font-weight:600}
     <h2>① 生成「50 题指令」</h2>
     <div class="hint">指令会<b>自动附带错题检查结果</b>：把当天课题相关、尚未回炉的错题列进去，要求 AI 必须出变式题。复制给元宝 → 把回覆的 JSON 贴到下方 ② → 直接在 ③ 做题。</div>
     <div class="row">
-      <button class="btn" onclick="buildPrompt()">🔧 生成指令</button>
+      <button class="btn" onclick="autoGenerate50()">⚡ 離線秒出 50 題</button>
+      <button class="btn2" onclick="buildPrompt()">🔧 生成指令（給 AI）</button>
       <button class="btn2" onclick="copyEl('promptOut')">📋 复制指令</button>
       <button class="btn2" onclick="runMistakeCheck()">🔍 错题检查</button>
     </div>
@@ -288,12 +348,62 @@ th{color:var(--sub);font-weight:600}
   </div>
 </section>
 
+<section id="tab-progress">
+  <div class="card hero">
+    <h2>📊 每科複習進度</h2>
+    <div class="sub">分母 = 該科課題庫總數；分子 = 已標「已複習」的課題。今日課題旁可直接勾，50 題正確率 ≥70% 也會自動標記。</div>
+    <div id="progressSummary" style="margin-top:10px"></div>
+  </div>
+  <div class="card"><div id="progressList"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn2" onclick="resetProgress()">↺ 全部重置</button>
+      <button class="btn2" onclick="exportProgress()">⬇️ 匯出進度</button>
+    </div>
+  </div>
+</section>
+
+<section id="tab-editor">
+  <div class="card needfill">
+    <h2>👤 考生資料（未填的會一直提示）</h2>
+    <div id="edProfile"></div>
+    <div class="row" style="margin-top:8px"><button class="btn" onclick="saveProfile()">💾 儲存資料</button></div>
+  </div>
+
+  <div class="card">
+    <h2>📚 科目列表（可增刪）</h2>
+    <div id="edSubjects"></div>
+    <div class="edrow"><input id="edNewSubj" class="g" placeholder="新增科目名，例：經濟"><button class="btn2" onclick="addSubject()">＋ 新增</button></div>
+  </div>
+
+  <div class="card">
+    <h2>📖 課題庫編輯器</h2>
+    <div class="sub">名稱 + 知識點（用「、」或逗號分隔）。改完即時影響今日課題、週測範圍、50 題與進度條分母。</div>
+    <div class="edrow"><select id="edSubjSel" class="g" onchange="renderEdTopics()"></select><button class="btn2" onclick="addEdTopic()">＋ 新增課題</button></div>
+    <div id="edTopics"></div>
+  </div>
+
+  <div class="card">
+    <h2>⏰ 作息時段（三段會即時跟著改）</h2>
+    <div id="edSchedule"></div>
+    <div class="row" style="margin-top:8px"><button class="btn" onclick="saveSchedule()">💾 儲存作息</button><button class="btn2" onclick="resetSchedule()">還原預設</button></div>
+  </div>
+
+  <div class="card">
+    <h2>🗓️ 考期微調</h2>
+    <div class="sub">同屆 DSE 核心科日期已預填；選修科若未確認就留空，到准考證派發後再改。</div>
+    <div id="edExams"></div>
+    <div class="row" style="margin-top:8px"><button class="btn" onclick="saveExams()">💾 儲存考期</button></div>
+  </div>
+</section>
+
 <nav>
   <button class="on" data-t="today" onclick="go('today')"><span>🎯</span>今日</button>
   <button data-t="quiz" onclick="go('quiz')"><span>✏️</span>50题</button>
   <button data-t="test" onclick="go('test')"><span>📝</span>周测</button>
   <button data-t="calendar" onclick="go('calendar')"><span>📅</span>日历</button>
   <button data-t="mistake" onclick="go('mistake')"><span>🔖</span>错题</button>
+  <button data-t="progress" onclick="go('progress')"><span>📊</span>進度</button>
+  <button data-t="editor" onclick="go('editor')"><span>✏️</span>編輯</button>
   <button data-t="data" onclick="go('data')"><span>⚙️</span>资料</button>
 </nav>
 
@@ -301,7 +411,7 @@ th{color:var(--sub);font-weight:600}
 /* ============================================================
    DSE 2027 今日复习定位器
    资料来源：
-   - 主档案 DSE2027_考生档案与提升计划.md v1.1（§5 课程清单 / §6.5 逐周表）
+   - 主档案 DSE2027_考生档案与提升计划.md v1.3（§5 课程清单 / §6.5 逐周表）
    - 图1 6A 2026-2027 TIMETABLE
    - 图2 X1/X2 选修分组
    - 图3 Value Added Scheme for S6（蓝色荧光笔 = 用户要上的科目）
@@ -310,6 +420,7 @@ th{color:var(--sub);font-weight:600}
 
 /* ---------- 基础工具 ---------- */
 const KEY="dse2027_daily_v1";
+const PRESET_NAME="dse_daily.html";
 function pad(n){return String(n).padStart(2,"0")}
 function fmt(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
 function parseD(s){const p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2])}
@@ -424,7 +535,7 @@ const SYL={
  s5:["跨主题关联",["大湾区 × 宪制地位","国家支持 × 世界议题","2h 一卷必答"]]
 }
 };
-function topicOf(sub,id){const t=SYL[sub]&&SYL[sub][id];return t?{id:id,name:t[0],points:t[1]}:{id:id||"—",name:"（本週未指定課題）",points:[]}}
+function topicOf(sub,id){const S=mergedSYL(),t=S[sub]&&S[sub][id];return t?{id:id,name:t[0],points:t[1]||[]}:{id:id||"—",name:"（本週未指定課題）",points:[]}}
 
 /* ---------- 逐周计划 W1–W21（依主档案 §6.5） ---------- */
 const WEEKS=[
@@ -463,7 +574,7 @@ function weekOf(ds){return WEEKS.find(w=>ds>=w.s&&ds<=w.e)||null}
 function phaseOf(ds){return PHASES.find(p=>ds>=p.s&&ds<=p.e)||(ds<PHASES[0].s?PHASES[0]:PHASES[6])}
 
 /* ---------- 官方考试日 / Gate / 周复盘 ---------- */
-const EXAMS=[
+let EXAMS=[
  {d:"2027-04-08",n:"中国语文 卷一＋卷二",icon:"🔴"},
  {d:"2027-04-09",n:"英国语文 卷一＋卷二",icon:"🔴"},
  {d:"2027-04-10",n:"英国语文 卷三 P3（周六）",icon:"🔴"},
@@ -539,18 +650,37 @@ const WEEKTEST=[
 /* ---------- 三段轮换（依主档案 §6.3） ---------- */
 function blocksOf(ds){
  const wk=weekOf(ds),i=wdIdx(ds);
- if(!wk)return [{slot:"—",sub:"—",topics:[],note:"此日期在 W1–W21 计划外（考试期／考后），按主档案 §6.6 只做维持。"}];
+ if(!wk)return [{slot:"—",sub:"—",topics:[],note:"此日期在 W1–W21 计划外（考试期／考后），只做维持手感。"}];
  const pick=(sub,off)=>{const arr=(wk.t[sub]||[]);if(!arr.length)return null;return topicOf(sub,arr[(i+(off||0))%arr.length])};
- const A={slot:"段 A · 19:15–20:15",sub:"",topics:[],note:"弱项主攻，永远给当天最不想做的那科"};
- const B={slot:"段 B · 20:25–21:25",sub:"",topics:[],note:"理科输出，必须写完整步骤（物理方法分／M2 论证链／化学单位）"};
- const C={slot:"段 C · 21:35–22:35",sub:"",topics:[],note:"轮换 + 错题回炉"};
- if(i===0){A.sub="英国语文";A.topics=[pick("英国语文")];B.sub="数学必修";B.topics=[pick("数学必修")];C.sub="加课复盘 + 错题";C.note="把 16:05 补课那科做一次输出（看≠会）";}
- else if(i===1){A.sub="化学";A.topics=[pick("化学")];B.sub="M2";B.topics=[pick("M2")];C.sub=(wk.w%2?"中国语文":"公民与社会发展");C.topics=[pick(C.sub)];C.note="隔周轮换；中文稳 3、公社保 A，不占黄金段";}
- else if(i===2){A.sub="英国语文";A.topics=[pick("英国语文",0)];B.sub="物理";B.topics=[pick("物理")];C.sub="错题本";C.topics=[];C.note="三分类回炉；只重做概念缺口";}
- else if(i===3){A.sub="固定占用日";A.topics=[{id:"—",name:"周四 06:30–12:00 校外补习（制式待确认）",points:["课前 15′ 预习该科 3 个问题","课后 20′ 写 3 考点 + 1 未明"]}];A.note="该时段不排复习；若为晚间时段则当日三段整段取消，只留 10′ 日结与睡眠";B.sub="—";B.note="不补进度、不熬夜";C.sub="10′ 日结";C.note="写 3 行日结 + 勾选";}
- else if(i===4){A.sub="化学";A.topics=[pick("化学",0)];B.sub=(wk.w%2?"M2":"数学必修");B.topics=[pick(B.sub)];C.sub="本周错题 + 周小结";C.note="逐题三分类；写本周 4 个数字";}
- else if(i===5){A.sub="周测 / 整卷计时";A.topics=[{id:"—",name:"09:15 起整卷计时（对齐英文 P3 考试钟）",points:["上午计时整卷","下午逐题三分类归因","选修单元精读"]}];B.sub="错题归因 + 选修精读";B.topics=[pick("物理"),pick("化学")].filter(Boolean);C.sub="休息半日";C.note="倦怠不是意志问题，是排程问题";}
- else {A.sub="周测";A.topics=[{id:"—",name:"周日周测（数学／中文／公社）",points:["按 WEEKTEST 时段","16:30–18:30 固定占用不动"]}];B.sub="周复盘 20′";B.topics=[{id:"—",name:"4 个数字 + 下周预排",points:["英 P3 正确率","化学 MC 正确率","物理或 M2 整卷分","净复习时数"]}];C.sub="完全休息半日";C.note="硬规则：每周留一个半日完全休息";}
+ const r=ROT[i]||{};
+ const mk=(slot,sub,note)=>({slot:slot,sub:sub||"",topics:[],note:note||""});
+ const A=mk(slotText("A"),r.a,r.na||"弱项主攻，永远给当天最不想做的那科");
+ const B=mk(slotText("B"),r.b,r.nb||"输出练习，必须写完整步骤／完整论证");
+ const C=mk(slotText("C"),r.c,r.nc||"轮换 + 错题回炉");
+ if(r.special==="fixed"){
+  A.sub="固定占用日";
+  A.topics=[{id:"—",name:r.fixedName||"固定占用（请到「编辑」填时段）",points:["课前 15′ 预习该科 3 个问题","课后 20′ 写 3 考点 + 1 未明"]}];
+  A.note="该时段不排复习；若为晚间时段则当日三段整段取消，只留 10′ 日结与睡眠；不为补进度熬夜";
+  B.sub="—";C.sub="10′ 日结";C.note="写 3 行日结 + 勾选";
+ }
+ else if(r.special==="sat"){
+  A.sub="周测 / 整卷计时";
+  A.topics=[{id:"—",name:"09:15 起整卷计时（对齐考试钟）",points:["上午计时整卷","下午逐题三分类归因","选修单元精读"]}];
+  B.sub="错题归因 + 选修精读";B.topics=[pick(r.sat1),pick(r.sat2)].filter(Boolean);
+  C.sub="休息半日";C.note="倦怠不是意志问题，是排程问题";
+ }
+ else if(r.special==="sun"){
+  A.sub="周测";A.topics=[{id:"—",name:"周日周测",points:["按周测时段执行","保留固定占用"]}];
+  B.sub="周复盘 20′";B.topics=[{id:"—",name:"4 个数字 + 下周预排",points:["本周正确率","整卷分","净复习时数","待回炉错题数"]}];
+  C.sub="完全休息半日";C.note="硬规则：每周留一个半日完全休息";
+ }
+ else{
+  if(r.bAlt)B.sub=(wk.w%2?r.bAlt[0]:r.bAlt[1]);
+  if(r.cAlt)C.sub=(wk.w%2?r.cAlt[0]:r.cAlt[1]);
+  A.topics=[pick(A.sub)].filter(Boolean);
+  B.topics=[pick(B.sub)].filter(Boolean);
+  C.topics=[pick(C.sub)].filter(Boolean);
+ }
  return [A,B,C].filter(x=>x&&x.sub!=="—");
 }
 
@@ -565,7 +695,14 @@ function blank(){return{
  graded:false,
  testRecords:{},        // key: 周一日期|科目 → {done,score,note}
  dailyLogs:{},          // key: date → 3 行日结
- quizMeta:{}            // 上次生成指令的日期/错题数
+ quizMeta:{},            // 上次生成指令的日期/错题数
+ // ── v2 新增（舊檔沒有這些欄位，Object.assign 會補上但不會清掉舊資料）──
+ topicProgress:{},       // "科目|課題id" → {done:true,at:date}
+ sylOverride:{},         // 課題庫覆寫：{科目:{id:[名稱,[知識點]] 或 null=刪除}}
+ subjectsOverride:null,  // 科目列表覆寫
+ scheduleOverride:{},    // 作息覆寫
+ examOverride:{},        // 考期覆寫：{考試名稱:新日期}
+ profileOverride:{}      // 考生資料（姓名／預估／目標／Band A）
 }}
 let D=blank();
 try{const raw=localStorage.getItem(KEY);if(raw)D=Object.assign(blank(),JSON.parse(raw))}catch(e){}
@@ -612,19 +749,20 @@ function go(t){document.querySelectorAll("section").forEach(s=>s.classList.toggl
  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
  if(t==="calendar")renderCalendar();if(t==="test")renderWeekTests();
  if(t==="mistake")renderMistakes();if(t==="data")renderData();
+ if(t==="progress")renderProgress();if(t==="editor")renderEditor();
  window.scrollTo(0,0)}
 function goToday(){CUR=today();document.getElementById("pickDate").value=CUR;renderAll()}
 function renderHero(){
  const p=phaseOf(CUR),wk=weekOf(CUR),ab=abWeek(CUR),sp=supplementOf(CUR);
  document.getElementById("heroDate").textContent=CUR.slice(5)+" 周"+wdName(CUR);
- document.getElementById("heroMeta").textContent=`${CUR} · Week ${ab} · ${wk?"W"+wk.w+" / "+wk.p:"考试期或计划外"} · ${p.id} ${p.name}`;
+ document.getElementById("heroMeta").textContent=`${CUR}${AB_PART(CUR)} · ${wk?"W"+wk.w+" / "+wk.p:"考试期或计划外"} · ${p.id} ${p.name}`;
  document.getElementById("heroDday").textContent=diffDays(CUR,"2027-04-08")+" 天";
  document.getElementById("heroPhase").textContent=p.id+" "+p.name;
  const total=diffDays(p.s,p.e)||1,done=Math.max(0,diffDays(p.s,CUR));
  document.getElementById("heroBar").style.width=Math.min(100,Math.round(done/total*100))+"%";
- const c=[["英文 P3",diffDays(CUR,"2027-04-10")],["化学",diffDays(CUR,"2027-04-15")],
-  ["物理",diffDays(CUR,"2027-04-21")],["M2",diffDays(CUR,"2027-04-23")],["口试",diffDays(CUR,"2027-03-09")]];
+ const c=HERO_CHIPS.map(([n,d])=>[n,diffDays(CUR,d)]);
  document.getElementById("heroChips").innerHTML=c.map(([n,d])=>`<div class="chip">${n} <b>${d}</b> 天</div>`).join("");
+ document.getElementById("profileBanner").innerHTML=profileBannerHTML();
  // 错题简报
  const pend=D.mistakes.filter(m=>m.rework_pending!==false);
  document.getElementById("mistakeBrief").innerHTML=pend.length
@@ -635,19 +773,21 @@ function renderHero(){
 function renderDay(){
  const wk=weekOf(CUR),p=phaseOf(CUR),sp=supplementOf(CUR),wt=weekTestOf(CUR),mk=marksOf(CUR);
  document.getElementById("dayHead").innerHTML=
-  `<b>${CUR}</b>（周${wdName(CUR)}／Week ${abWeek(CUR)}）· ${p.id} ${p.name}${wk?" · W"+wk.w:""}　${wk?'<span class="badge">'+esc(wk.ms)+'</span>':''}`;
+  `<b>${CUR}</b>（周${wdName(CUR)}${AB_PART(CUR)}）· ${p.id} ${p.name}${wk?" · W"+wk.w:""}　${wk?'<span class="badge">'+esc(wk.ms)+'</span>':''}`;
  const bs=blocksOf(CUR);
  document.getElementById("blocks").innerHTML=bs.map((b,i)=>{
   const cls=["","b2","b3"][i]||"";
   const col=SCOLOR[b.sub]?"<span class='tag "+SCOLOR[b.sub]+"'>"+esc(b.sub)+"</span>":"";
-  const tops=b.topics.filter(Boolean).map(t=>
-   `<div class="topic">📌 ${esc(t.name)}</div>`+
-   (t.points&&t.points.length?t.points.map(x=>`<div class="pt">· ${esc(x)}</div>`).join(""):"")
-  ).join("");
+  const tops=b.topics.filter(Boolean).map(t=>{
+   const done=!!(D.topicProgress[progKey(b.sub,t.id)]||{}).done;
+   return `<div class="topic">📌 ${esc(t.name)}
+     ${t.id!=="—"?`<button class="mini donebtn ${done?"on":""}" onclick="toggleTopicDone('${esc(b.sub)}','${esc(t.id)}')">${done?"✅ 已複習":"標為已複習"}</button>`:""}</div>`+
+     (t.points&&t.points.length?t.points.map(x=>`<div class="pt">· ${esc(x)}</div>`).join(""):"");
+  }).join("");
   return `<div class="block ${cls}"><div class="h"><span>${esc(b.slot)} ${col}</span><span class="sub">${esc(b.sub)}</span></div>${tops||'<div class="pt">—</div>'}<div class="pt" style="margin-top:6px;color:var(--warn)">${esc(b.note||"")}</div></div>`;
  }).join("");
  let extra=`<h3>🔵 今日校内 / 补课</h3>`;
- extra+=`<div class="kv"><span>在校重点（图1）</span><b>${(SCHOOL[wdIdx(CUR)]||[]).join(" ｜ ")||"—"}</b></div>`;
+ extra+=`<div class="kv"><span>在校重点${SCHOOL_NOTE}</span><b>${((SCHOOL[wdIdx(CUR)]||[])).join(" ｜ ")||"—"}</b></div>`;
  extra+=sp?`<div class="kv"><span>增值补课（图3 蓝标 · Week ${sp.ab}）</span><b>${esc(sp.code)} · ${esc(sp.sub)} · ${esc(sp.time)} · 室 ${esc(sp.room)}</b></div>`
            :`<div class="kv"><span>增值补课</span><b>—（校历无补课 / 已过 1/27）</b></div>`;
  if(wt.length){extra+=`<h3>📝 今日周测（${wt.length} 科）</h3>`;
@@ -690,8 +830,8 @@ function buildPrompt(){
  const lines=[];
  lines.push("你是 HKDSE 2027 考生的出题教练。请依据以下「当日复习卡」生成 **50 道题**，并只输出一个 JSON 数组（可包在 ```json … ``` 内），不要输出任何额外说明文字。");
  lines.push("");
- lines.push("【考生背景】2027 HKDSE，选修 M2／化学／物理；物理选修 E2 原子世界 + E3 能量和能源的使用；化学选修工业化学（卷二第二选修待确认）。目标：英 3（门槛）／化 4／数·M2·物 5–5*／中 3／公社 A。");
- lines.push("【日期】"+CUR+"（周"+wdName(CUR)+"，Week "+abWeek(CUR)+"，"+phaseOf(CUR).id+(wk?"，W"+wk.w:"")+"）");
+ lines.push(PROFILE_TEXT);
+ lines.push("【日期】"+CUR+"（周"+wdName(CUR)+AB_PART(CUR).replace("／","，")+"，"+phaseOf(CUR).id+(wk?"，W"+wk.w:"")+"）");
  lines.push("");
  lines.push("【当日复习卡｜50 题必须覆盖以下全部课题，不得超范围】");
  // 段数会因固定占用日（周四）变成 2 段，配额要动态分配且合计恒为 50
@@ -846,7 +986,14 @@ function submitAnswers(){
  document.getElementById("qResult").innerHTML=`<div class="${wrong.length?"errbox":"hint"}"><b>判分结果：${right} / ${D.questions.length}（${rate}%）</b><br>
   ${wrong.length?`❌ 新增 <b>${wrong.length}</b> 条错题，已自动写入错题本并标 <code>rework_pending</code>；下一次生成 50 题指令会强制带出变式题。`:`✅ 全对，没有新错题；下次指令仍会做防重复检查。`}<br>
   ${rate<70?"⚠️ 正确率未达 70%，建议把该课题放回明天段 A 重做一次主动回忆。":"✅ 本日课题暂算复习到位，可进入下一课题。"}</div>`;
- renderMistakes();renderHero();
+ // v2：正確率 ≥70% 自動把當日課題標為已複習
+ if(rate>=70){
+  blocksOf(CUR).forEach(b=>b.topics.filter(Boolean).forEach(t=>{
+   if(t.id!=="—")D.topicProgress[progKey(b.sub,t.id)]={done:true,at:CUR,auto:true};
+  }));
+  save();
+ }
+ renderMistakes();renderHero();renderProgress();
 }
 
 /* ---------- 周测 ---------- */
@@ -895,7 +1042,7 @@ function renderCalendar(){
   const dots=mk.slice(0,4).map(x=>`<span class="dot" style="background:${x.cls==="t-red"?"#fb7185":x.cls==="t-yel"?"#fbbf24":x.cls==="t-blu"?"#60a5fa":x.cls==="t-grn"?"#86efac":"#7dd3fc"}"></span>`).join("");
   const txt=mk.length?mk[0].icon+" "+mk[0].text.slice(0,4):"";
   html+=`<div class="cell ${out?"out":""} ${ds===today()?"today":""} ${ds===CUR?"sel":""}" ${out?"":`onclick="selDay('${ds}')"`}>
-   <div class="d">${d.getDate()}</div><div class="ab">${ab}</div>
+   <div class="d">${d.getDate()}</div><div class="ab">${USE_AB?ab:""}</div>
    <div class="mk">${esc(txt)}</div><div class="dots">${dots}</div></div>`;
  }
  document.getElementById("calGrid").innerHTML=html;
@@ -908,7 +1055,7 @@ function renderCalendar(){
 function selDay(ds){CUR=ds;document.getElementById("pickDate").value=ds;renderCalendar();showCalDetail(ds);renderHero()}
 function showCalDetail(ds){
  const wk=weekOf(ds),p=phaseOf(ds),sp=supplementOf(ds),wt=weekTestOf(ds),mk=marksOf(ds),bs=blocksOf(ds);
- let h=`<div class="row"><b>${ds}</b><span class="sub">周${wdName(ds)} · Week ${abWeek(ds)} · ${p.id} ${p.name}${wk?" · W"+wk.w:""}</span></div>`;
+ let h=`<div class="row"><b>${ds}</b><span class="sub">周${wdName(ds)}${AB_PART(ds)} · ${p.id} ${p.name}${wk?" · W"+wk.w:""}</span></div>`;
  h+=`<div class="row" style="margin:7px 0">${mk.length?mk.map(x=>`<span class="tag ${x.cls}">${x.icon} ${esc(x.text)}</span>`).join(""):'<span class="sub">无特别标记</span>'}</div>`;
  h+=`<h3>当日复习</h3>`;
  bs.forEach(b=>{const tops=b.topics.filter(Boolean).map(t=>t.name).join("、")||"—";
@@ -948,59 +1095,276 @@ function clearDoneMistakes(){if(!confirm("清除所有「已回炉」错题？")
 /* ---------- 资料 / 设置 ---------- */
 function renderData(){
  document.getElementById("dataOverview").innerHTML=`
-  <div class="kv"><span>资料版本</span><b>v1.0 · 2026-11-16 建立（校历图片解析）</b></div>
+  <div class="kv"><span>资料版本</span><b>${DATA_INFO.ver}</b></div>
   <div class="kv"><span>逐周计划</span><b>W1–W21（${WEEKS.length} 周）</b></div>
-  <div class="kv"><span>课题库</span><b>${Object.values(SYL).reduce((n,o)=>n+Object.keys(o).length,0)} 个课题 / 7 科</b></div>
-  <div class="kv"><span>校内补课蓝标</span><b>7 项（A 周 4 · B 周 3）</b></div>
-  <div class="kv"><span>S6 补课期</span><b>2026-09-07 → 2027-01-27</b></div>
-  <div class="kv"><span>A/B 周覆盖</span><b>${Object.keys(D.ab).length} 笔用户覆写</b></div>
+  <div class="kv"><span>课题库</span><b>${Object.values(mergedSYL()).reduce((n,o)=>n+Object.keys(o).length,0)} 个课题 / ${subjectsNow().length} 科</b></div>
+  <div class="kv"><span>${DATA_INFO.suppLabel}</span><b>${DATA_INFO.supp}</b></div>
+  <div class="kv"><span>已复习课题</span><b>${Object.values(D.topicProgress).filter(x=>x&&x.done).length} 个（见「进度」页）</b></div>
   <div class="kv"><span>错题 / 题目 / 周测记录</span><b>${D.mistakes.length} / ${D.questions.length} / ${Object.keys(D.testRecords).length}</b></div>
-  <div class="kv"><span>待确认</span><b style="color:var(--warn)">化学卷二第二选修 · 周四/周日时段制式 · E2/E3 官方对照 · ⚠️ A/B 周解读（已收图片，待你确认）</b></div>`;
+  <div class="kv"><span>待确认</span><b style="color:var(--warn)">${DATA_INFO.todo}</b></div>`;
  // 补课表
  let sh=`<table><tr><th>周别</th><th>日</th><th>科目（蓝标）</th><th>代码</th><th>师/室</th><th>时间</th></tr>`;
- ["A","B"].forEach(ab=>[1,2,3,4,5].forEach(i=>{const r=SUPP[ab][i];if(r)
+ ["A","B"].forEach(ab=>[1,2,3,4,5].forEach(i=>{const r=(SUPP[ab]||{})[i];if(r)
   sh+=`<tr><td>Week ${ab}</td><td>周${["一","二","三","四","五"][i-1]}</td><td><b>${esc(r.sub)}</b></td><td>${esc(r.code)}</td><td>${esc(r.teacher)} / ${esc(r.room)}</td><td>${r.long?"16:05–18:00":"16:05–17:00"}</td></tr>`}));
  sh+="</table>";
  document.getElementById("suppTable").innerHTML=sh;
  // A/B 周
  const mons=[];let m="2026-09-07";while(m<="2027-05-24"){mons.push(m);m=addDays(m,7)}
- document.getElementById("abHint").textContent=`共 ${mons.length} 周；点击切换 A/B（改动只存本机，会即时影响补课与日历判定）。`;
+ document.getElementById("abHint").textContent=USE_AB?`共 ${mons.length} 周；点击切换 A/B（改动只存本机，会即时影响补课与日历判定）。`:`此站未匯入 A/B 週校曆；如學校有 A/B 週，請把校曆圖片給我，我幫你接進來。`;
  document.getElementById("abList").innerHTML=mons.map(x=>{
   const v=abWeek(x),user=!!D.ab[x];
+  if(!USE_AB)return `<button class="mini" style="margin:2px;padding:4px 7px;opacity:.5" disabled>${x.slice(5)} —</button>`;
   return `<button class="mini" style="margin:2px;padding:4px 7px;${user?"border-color:var(--acc);color:var(--acc)":""}" onclick="toggleAB('${x}')">${x.slice(5)} <b>${v}</b></button>`;
  }).join("");
  // 在校课表
  let sh2=`<table><tr><th>日</th><th>与你七科相关时段</th></tr>`;
- [0,1,2,3,4].forEach(i=>sh2+=`<tr><td>周${["一","二","三","四","五"][i]}</td><td>${SCHOOL[i].map(esc).join("<br>")}</td></tr>`);
+ [0,1,2,3,4].forEach(i=>sh2+=`<tr><td>周${["一","二","三","四","五"][i]}</td><td>${(SCHOOL[i]||[]).map(esc).join("<br>")||"—"}</td></tr>`);
  sh2+="</table>";
  document.getElementById("schoolTable").innerHTML=sh2;
 }
 function toggleAB(m){const cur=abWeek(m);D.ab[m]=cur==="A"?"B":"A";save();renderData();renderHero();renderCalendar()}
 function exportData(){
- const out=Object.assign({},D,{_meta:{exported_at:today(),tool:"dse_daily.html",version:"1.0",
+ const out=Object.assign({},D,{_meta:{exported_at:today(),tool:PRESET_NAME,version:"2.0",
   note:"可连同主档案与 state.json 一起贴给 AI；AI 更新进度时请以 merge patch 处理。"}});
- dl("dse_daily_data.json",JSON.stringify(out,null,2));
+ dl(PRESET_NAME.replace(/\.html$/,"")+"_data.json",JSON.stringify(out,null,2));
 }
 function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();
  r.onload=()=>{try{mergeObj(JSON.parse(r.result))}catch(x){alert("JSON 解析失败："+x.message)}};r.readAsText(f,"utf-8");e.target.value=""}
 function mergePasted(){try{mergeObj(JSON.parse(document.getElementById("pasteData").value))}catch(x){alert("JSON 解析失败："+x.message)}}
 function mergeObj(o){
  if(!o||typeof o!=="object")return alert("资料格式不对");
- ["ab","mistakes","questions","answers","testRecords","dailyLogs","quizMeta"].forEach(k=>{
+ ["ab","mistakes","questions","answers","testRecords","dailyLogs","quizMeta",
+  "topicProgress","sylOverride","subjectsOverride","scheduleOverride","examOverride","profileOverride"].forEach(k=>{
   if(o[k]!==undefined)D[k]=o[k]});
  if(o.suppOverride!==undefined)D.suppOverride=o.suppOverride;
  if(o.schoolOverride!==undefined)D.schoolOverride=o.schoolOverride;
  save();renderAll();alert("✅ 已合并资料。若你补的是课程表／补课表，请再告诉我，我会把它接进排程逻辑。");
 }
-function renderAll(){renderHero();renderQuestions();renderWeekTests();renderCalendar();renderMistakes();renderData()}
+function renderAll(){applyExamOverride();renderHero();renderQuestions();renderWeekTests();renderCalendar();renderMistakes();renderData();renderProgress();renderEditor();renderABListNote()}
+
+
+/* ══════════════ v2 升級邏輯 ══════════════ */
+function slotText(k){
+ const def={A:"19:15–20:15",B:"20:25–21:25",C:"21:35–22:35"};
+ const t=Object.assign(def,D.scheduleOverride||{});
+ return {A:"段 A · "+t.A,B:"段 B · "+t.B,C:"段 C · "+t.C}[k]||k;
+}
+function AB_PART(ds){return USE_AB?"／Week "+abWeek(ds):""}
+function AB_LABEL(ds){return USE_AB?"Week "+abWeek(ds):""}
+function mergedSYL(){
+ const s={};Object.keys(SYL).forEach(k=>s[k]=Object.assign({},SYL[k]));
+ const o=D.sylOverride||{};
+ Object.keys(o).forEach(sub=>{s[sub]=s[sub]||{};Object.keys(o[sub]||{}).forEach(id=>{
+   if(o[sub][id]===null)delete s[sub][id];else s[sub][id]=o[sub][id];});});
+ return s;
+}
+function subjectsNow(){return (D.subjectsOverride&&D.subjectsOverride.length)?D.subjectsOverride:SUBJECTS}
+function progKey(sub,id){return sub+"|"+id}
+function totalTopics(sub){const S=mergedSYL();return S[sub]?Object.keys(S[sub]).length:0}
+function doneTopics(sub){const S=mergedSYL();if(!S[sub])return 0;
+ return Object.keys(S[sub]).filter(id=>(D.topicProgress[progKey(sub,id)]||{}).done).length}
+
+function renderProgress(){
+ const subs=subjectsNow(),S=mergedSYL();let tot=0,dn=0;
+ document.getElementById("progressList").innerHTML=subs.map(s=>{
+  const t=totalTopics(s),d=doneTopics(s),p=t?Math.round(d/t*100):0;tot+=t;dn+=d;
+  const tags=t?Object.keys(S[s]||{}).map(id=>{
+   const done=!!(D.topicProgress[progKey(s,id)]||{}).done;
+   return `<span class="tgl ${done?"on":""}" onclick="toggleTopicDone('${esc(s)}','${esc(id)}')">${done?"✅":"⬜"} ${esc(((S[s]||{})[id]||[])[0]||id)}</span>`;
+  }).join(""):'<span class="sub">（尚未建立課題，去「編輯」新增）</span>';
+  return `<div class="pcard"><div class="row"><b>${esc(s)}</b><span class="sub">${d} / ${t} 課題</span><b style="margin-left:auto;color:var(--acc)">${p}%</b></div>
+   <div class="pbar"><i style="width:${p}%"></i></div><div>${tags}</div></div>`;
+ }).join("");
+ const all=tot?Math.round(dn/tot*100):0;
+ document.getElementById("progressSummary").innerHTML=
+  `<div class="kv"><span>整體進度</span><b>${dn} / ${tot} 課題 · ${all}%</b></div><div class="pbar" style="height:10px"><i style="width:${all}%"></i></div>`;
+}
+function toggleTopicDone(s,id){const k=progKey(s,id);
+ if((D.topicProgress[k]||{}).done)delete D.topicProgress[k];
+ else D.topicProgress[k]={done:true,at:CUR};
+ save();renderProgress();renderDay();}
+function renderABListNote(){
+ if(!USE_AB)document.getElementById("abList").innerHTML=
+  '<div class="sub">此站未啟用 A/B 週（同學的校曆圖片尚未提供）。如學校有 A/B 週，把圖片給我即可接入；目前不影響複習排程。</div>';
+}
+function resetProgress(){if(!confirm("確定清空全部「已複習」標記？錯題／成績／日結不會受影響。"))return;
+ D.topicProgress={};save();renderProgress();renderDay();}
+function exportProgress(){dl(PRESET_NAME.replace(/\.html$/,"")+"_進度.json",
+ JSON.stringify({exported_at:today(),tool:PRESET_NAME,topicProgress:D.topicProgress,
+  subjects:subjectsNow(),syl:mergedSYL()},null,2))}
+
+/* ── 編輯器 ── */
+function profileBannerHTML(){
+ const p=D.profileOverride||{},miss=[];
+ if(!p.name)miss.push("姓名／代號");
+ if(!p.grades)miss.push("預估成績 → 目標");
+ if(!p.banda)miss.push("Band A 課程代碼");
+ if(!miss.length)return `<div class="hint">✅ ${esc(p.name)}｜${esc(p.grades||"")}｜Band A ${esc(p.banda||"")}</div>`;
+ return `<div class="warnbox">⚠️ 待填：<b>${miss.join("、")}</b>。到「✏️ 編輯 → 考生資料」填一次，之後每次開頁都會帶出；不填不影響複習排程。</div>`;
+}
+const PROFILE_FIELDS=[["name","姓名／代號","例：阿明 / Classmate A"],
+ ["grades","預估 → 目標","例：中3→3／英2-3→3／數4-5→5／公社A／西史3→4／旅款4→5"],
+ ["banda","Band A 課程代碼","例：JSxxxx／JSxxxx／JSxxxx"],
+ ["note","備註（選修／弱項）","例：選修 西方歷史＋旅款；英文 P3 最弱"]];
+function renderEditor(){
+ const p=D.profileOverride||{};
+ document.getElementById("edProfile").innerHTML=PROFILE_FIELDS.map(([k,l,ph])=>
+  `<label>${l}</label><input id="pf_${k}" value="${esc(p[k]||"")}" placeholder="${esc(ph)}">`).join("");
+ const subs=subjectsNow();
+ document.getElementById("edSubjects").innerHTML=subs.map((s,i)=>
+  `<span class="tgl">${esc(s)} <button onclick="delSubject(${i})">✕</button></span>`).join("")||'<span class="sub">（無科目，請新增）</span>';
+ const sel=document.getElementById("edSubjSel"),keep=sel.value;
+ sel.innerHTML=subs.map(s=>`<option ${s===keep?"selected":""}>${esc(s)}</option>`).join("");
+ renderEdTopics();
+ const t=Object.assign({wake:"07:30",leave:"08:00",schoolEnd:"16:00",supp:"16:05–17:00",sleep:"23:30",
+  A:"19:15–20:15",B:"20:25–21:25",C:"21:35–22:35"},D.scheduleOverride||{});
+ const SL=[["wake","起床"],["leave","出門"],["schoolEnd","下課"],["supp","校內補課"],
+  ["A","段 A"],["B","段 B"],["C","段 C"],["sleep","睡覺"]];
+ document.getElementById("edSchedule").innerHTML=SL.map(([k,l])=>
+  `<div class="edrow"><span class="sub" style="width:74px;flex:0 0 74px">${l}</span><input class="g" id="sc_${k}" value="${esc(t[k]||"")}"></div>`).join("");
+ document.getElementById("edExams").innerHTML=EXAMS.map((e,i)=>
+  `<div class="edrow"><span class="sub g">${esc(e.n)}</span><input type="date" id="ex_${i}" value="${esc(e.d)}" style="flex:0 0 150px"></div>`).join("");
+}
+function saveProfile(){const o={};PROFILE_FIELDS.forEach(([k])=>o[k]=document.getElementById("pf_"+k).value.trim());
+ D.profileOverride=o;save();renderHero();renderEditor();alert("✅ 考生資料已儲存");}
+function addSubject(){const v=document.getElementById("edNewSubj").value.trim();if(!v)return alert("請填科目名");
+ const arr=subjectsNow().slice();if(arr.includes(v))return alert("已存在");
+ arr.push(v);D.subjectsOverride=arr;
+ D.sylOverride=D.sylOverride||{};if(!D.sylOverride[v])D.sylOverride[v]={};
+ save();renderEditor();renderProgress();renderData();alert("✅ 已新增「"+v+"」，請到課題庫補課題");}
+function delSubject(i){const arr=subjectsNow().slice(),s=arr[i];
+ if(!confirm("移除「"+s+"」？（課題庫資料會保留，不會刪除）"))return;
+ arr.splice(i,1);D.subjectsOverride=arr;save();renderEditor();renderProgress();}
+function renderEdTopics(){
+ const sub=document.getElementById("edSubjSel").value,S=mergedSYL(),o=S[sub]||{};
+ document.getElementById("edTopics").innerHTML=Object.keys(o).length?Object.keys(o).map((id,i)=>
+  `<div class="edbox"><div class="edrow"><span class="badge">${esc(id)}</span>
+    <input class="g" id="et_n_${i}" value="${esc((o[id]||[])[0]||"")}" placeholder="課題名稱">
+    <button class="mini" onclick="delEdTopic('${esc(id)}')">✕ 刪除</button></div>
+   <input id="et_p_${i}" value="${esc(((o[id]||[])[1]||[]).join("、"))}" placeholder="知識點，用「、」分隔">
+   <div class="row" style="margin-top:6px"><button class="btn2" onclick="saveEdTopic('${esc(id)}',${i})">💾 儲存此課題</button></div></div>`).join("")
+  :'<div class="sub" style="margin:10px 0">這科還沒有課題，按「＋ 新增課題」。</div>';
+}
+function saveEdTopic(id,i){const sub=document.getElementById("edSubjSel").value;
+ const name=document.getElementById("et_n_"+i).value.trim()||id;
+ const pts=document.getElementById("et_p_"+i).value.split(/[、,，;；]/).map(x=>x.trim()).filter(Boolean);
+ D.sylOverride[sub]=D.sylOverride[sub]||{};D.sylOverride[sub][id]=[name,pts];
+ save();renderEdTopics();renderProgress();renderDay();renderData();alert("✅ 已儲存");}
+function addEdTopic(){const sub=document.getElementById("edSubjSel").value;if(!sub)return;
+ const id="u"+Date.now().toString().slice(-6);
+ D.sylOverride[sub]=D.sylOverride[sub]||{};D.sylOverride[sub][id]=["新課題",["重點一","重點二"]];
+ save();renderEdTopics();renderProgress();renderData();}
+function delEdTopic(id){const sub=document.getElementById("edSubjSel").value;
+ if(!confirm("刪除課題「"+id+"」？已標記的複習進度會保留但不計入分母。"))return;
+ D.sylOverride[sub]=D.sylOverride[sub]||{};D.sylOverride[sub][id]=null;
+ save();renderEdTopics();renderProgress();renderData();}
+function saveSchedule(){const ks=["wake","leave","schoolEnd","supp","A","B","C","sleep"],o={};
+ ks.forEach(k=>o[k]=document.getElementById("sc_"+k).value.trim());
+ D.scheduleOverride=o;save();renderDay();renderEditor();alert("✅ 作息已更新，三段時段即時生效");}
+function resetSchedule(){D.scheduleOverride={};save();renderDay();renderEditor();alert("✅ 已還原預設作息");}
+function saveExams(){const o={};EXAMS.forEach((e,i)=>{const v=document.getElementById("ex_"+i).value;if(v)o[e.n]=v});
+ D.examOverride=o;save();applyExamOverride();renderCalendar();renderEditor();renderHero();alert("✅ 考期已更新並重算日曆");}
+function applyExamOverride(){
+ if(!D.examOverride)return;
+ EXAMS=EXAMS.map(e=>Object.assign({},e,{d:D.examOverride[e.n]||e.d}));
+}
+
+/* ── 離線自動出 50 題 ── */
+function seededRand(s){const x=Math.sin(s*12.9898)*43758.5453;return x-Math.floor(x)}
+function pickOne(a,s){return a[Math.floor(seededRand(s)*a.length)%a.length]}
+function makeVariant(m,k){
+ const sub=m.subject||"綜合",topic=m.topic||"錯題回爐",txt=String(m.text||"上次錯題").slice(0,64);
+ const good="先寫公式／框架，再代資料，最後檢查單位、時序與關鍵詞";
+ const bad=["直接憑第一直覺寫答案，不回看題目","把上次錯的答案照抄一次","跳過這類題，只做自己 already 會的"];
+ const pos=k%4,opts=[];let di=0;
+ for(let i=0;i<4;i++)opts.push("ABCD"[i]+". "+(i===pos?good:bad[di++]));
+ return {id:"Q0",subject:sub,topic:topic,type:"mcq",
+  q:`【🔁 錯題變式 ${k+1}｜${sub}】上次錯在「${txt}」。下列哪個做法下次最能避免再錯？`,
+  options:opts,answer:"ABCD"[pos],
+  explanation:`原錯題：${txt}。變式題換了問法，考的是同一個失分點；正確做法是先建立框架再輸出。`,
+  difficulty:"2",source:"mistake_rework",mistake_ref:"M"+(k+1)};
+}
+function makeQuestion(sub,t,seed){
+ const pts=(t.points&&t.points.length)?t.points:["寫出定義","辨識常見錯誤","說出一個例子"];
+ const p=pickOne(pts,seed*7+1),name=t.name||"本課題",r=seededRand(seed*13+3);
+ let q,opts=[],ans,exp,type="mcq",unit="";
+ if(r<0.30){
+  const wrong=["與「"+name+"」無關的干擾敘述","把「"+name+"」與另一課題混淆的說法","只抄標題、沒有解釋的敘述"];
+  const good="✅ "+p,all=[good].concat(wrong.map(w=>"✗ "+w));
+  // 確定性洗牌，且正確選項位置輪換
+  const pos=seed%4,rest=all.slice(1);opts=[];let di=0;
+  for(let i=0;i<4;i++)opts.push("ABCD"[i]+". "+(i===pos?good.slice(2):rest[di++]));
+  ans="ABCD"[pos];q=`【${sub}｜${name}】下列哪一項是這個課題的正確重點？`;
+  exp=`正確：${p}。其餘三項是常見混淆／空泛敘述。課題：${name}。`;
+ }
+ else if(r<0.58){
+  const wrong2=["倒因為果的說法","少了關鍵條件的說法","時序／單位錯置的說法"];
+  const good=p,pos=seed%4,opts2=[];let di=0;
+  for(let i=0;i<4;i++)opts2.push("ABCD"[i]+". "+(i===pos?good:wrong2[di++]));
+  opts=opts2;ans="ABCD"[pos];q=`【${sub}｜${name}】關於「${p}」，哪一項敘述正確？`;
+  exp=`${p} 是 ${name} 的踩分點；答題要寫完整條件與關鍵詞。`;
+ }
+ else if(r<0.80){
+  type="short";
+  q=`【${sub}｜${name}】用一句話寫出「${p}」的要點，並寫出一個會被扣分的寫法。`;
+  ans=p.split(/[／/、，,]/)[0].slice(0,10)+"|關鍵|要點|因為";
+  exp=`踩分點：${p}。避免只寫標題、不寫條件或關鍵詞。`;
+ }
+ else{
+  type="numeric";
+  const a=2+Math.floor(seededRand(seed*3+9)*8),b=2+Math.floor(seededRand(seed*5+11)*9),val=a*b;
+  q=`【${sub}｜${name}】模板換數練習：每組 ${a} 個檢查點、共 ${b} 組，總共要檢查多少個？（只填數字）`;
+  ans=String(val);unit="個";
+  exp=`${a} × ${b} = ${val}。練的是「先寫式子再代數字」；真實試題請用「🔧 生成指令」交給 AI 補。`;
+ }
+ return {id:"Q"+(seed+1),subject:sub,topic:name,type:type,q:q,options:opts,
+  answer:ans,unit:unit,explanation:exp,difficulty:String(1+Math.floor(seededRand(seed+2)*3)),source:"new"};
+}
+function quotaOf(n){return n===1?[50]:n===2?[30,20]:n===3?[20,20,10]:n.map((_,i)=>i===n.length-1?10:Math.round(40/(n.length-1)))}
+function autoGenerate50(){
+ const c=runMistakeCheck(),bs=blocksOf(CUR),quota=quotaOf(bs.length),qs=[];
+ c.rel.slice(0,15).forEach((m,k)=>{if(qs.length<c.need)qs.push(makeVariant(m,k))});
+ while(qs.length<c.need)qs.push(makeVariant({subject:bs[0].sub,topic:bs[0].topics[0]?bs[0].topics[0].name:"綜合",
+  text:"本課題最常見的失分點"},qs.length));
+ let seed=100+parseInt(CUR.replace(/-/g,"").slice(-4),10);
+ bs.forEach((b,bi)=>{
+  let tops=b.topics.filter(Boolean);
+  if(!tops.length)tops=[{id:"—",name:b.sub+" 綜合維持",points:["回憶本週 3 個重點","寫出 1 個常錯處","檢查上次錯題"]}];
+  for(let j=0;j<(quota[bi]||10);j++){qs.push(makeQuestion(b.sub,tops[j%tops.length],seed++));}
+ });
+ while(qs.length<50)qs.push(makeQuestion(bs[0].sub,bs[0].topics[0]||{id:"—",name:"綜合",points:["重點回憶"]},seed++));
+ const arr=qs.slice(0,50);arr.forEach((q,i)=>q.id="Q"+(i+1));
+ D.questions=arr;D.answers={};D.graded=false;save();
+ document.getElementById("qValidate").innerHTML=
+  `<div class="hint">⚡ <b>離線自動出題完成</b>：50 題 · 覆蓋 ${bs.length} 段課題 · 含 <b>${c.need}</b> 道${c.rel.length?"錯題變式":"易錯點預防題"} · 可直接到 ③ 做題。<br>
+   <span class="sub">離線題由模板換數字／換情境組成，短答採關鍵詞寬鬆判定，請自行對照詳解；要更深、更貼真卷請按「🔧 生成指令」交給 AI。</span></div>`;
+ renderQuestions();go("quiz");
+}
+
+/* ══════════ 預設：mine ══════════ */
+const USE_AB=true;
+const SCHOOL_NOTE="（图1）";
+const HERO_CHIPS=[["英文 P3","2027-04-10"],["化学","2027-04-15"],["物理","2027-04-21"],["M2","2027-04-23"],["口试","2027-03-09"]];
+const PROFILE_TEXT="【考生背景】2027 HKDSE，选修 M2／化学／物理；物理选修 E2 原子世界 + E3 能量和能源的使用；化学选修工业化学（卷二第二选修待确认）。目标：英 3（门槛）／化 4／数·M2·物 5–5*／中 3／公社 A。";
+const DATA_INFO={ver:"v2.0 藍白升級版 · 2026-11-23",suppLabel:"校内补课蓝标",supp:"7 项（A 周 4 · B 周 3）｜S6 至 2027-01-27",todo:"化学卷二第二选修 · 周四/周日时段制式 · E2/E3 官方对照 · ⚠️ A/B 周解读（已收图片，待你确认）"};
+const ROT=[
+ {a:"英国语文",b:"数学必修",c:"加课复盘 + 错题",na:"弱项主攻，永远给当天最不想做的那科"},
+ {a:"化学",b:"M2",cAlt:["中国语文","公民与社会发展"],nc:"隔周轮换；中文稳 3、公社保 A，不占黄金段"},
+ {a:"英国语文",b:"物理",c:"错题本",nc:"三分类回炉；只重做概念缺口"},
+ {special:"fixed",fixedName:"周四 06:30–12:00 校外补习（制式待确认）"},
+ {a:"化学",b:"M2",bAlt:["M2","数学必修"],c:"本周错题 + 周小结",nc:"逐题三分类；写本周 4 个数字"},
+ {special:"sat",sat1:"物理",sat2:"化学"},
+ {special:"sun"}
+];
 
 /* ---------- 启动 ---------- */
 document.getElementById("pickDate").value=CUR;
 document.getElementById("calPick").value=CUR;
 document.getElementById("pickDate").addEventListener("change",e=>{if(e.target.value){CUR=e.target.value;document.getElementById("calPick").value=CUR;renderHero();renderCalendar()}});
 CAL_Y=parseD(CUR).getFullYear();CAL_M=parseD(CUR).getMonth();
+if(!localStorage.getItem(KEY)){D.profileOverride={};save();}
 renderAll();go("today");
 </script>
-<div class="foot">DSE 2027 备考档案包 · 考试日期以 HKEAA 准考证为准 · 校历按图片解析，如有出入请到「资料」修正</div>
+<div class="foot">🎯 DSE 2027 · 今日复习定位器（藍白升級版） · 考試日期以 HKEAA 准考證為準 · 資料存本機，換裝置請先到「資料」頁匯出</div>
 </body>
 </html>
